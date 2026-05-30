@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for my bestie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles & Variables --- */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #1c1c1c;
+            --primary-red: #ff3b3b;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Faint Background Text --- */
+        .bg-text {
+            position: absolute;
+            font-family: 'Dancing Script', cursive;
+            font-size: 8rem;
+            color: rgba(255, 59, 59, 0.25);
+            z-index: 0;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* --- UI Card Container --- */
+        .card-container {
+            background-color: var(--card-bg);
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 59, 59, 0.15);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            max-width: 500px;
+            width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* --- Buttons --- */
+        button {
+            background: linear-gradient(45deg, #ff3b3b, #d90000);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.25s;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 59, 59, 0.6);
+        }
+
+        /* --- Fairy Lights --- */
+        .lights-container {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 1s;
+            pointer-events: none;
+        }
+
+        .lights-container.visible {
+            opacity: 1;
+        }
+
+        .lightbulb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fffbe0;
+            box-shadow: 0 0 15px 5px #fffaaa;
+            animation: twinkle 1.5s infinite alternate;
+        }
+
+        .lightbulb:nth-child(even) { animation-delay: 0.5s; background: #ffaaaa; box-shadow: 0 0 15px 5px #ff5555; }
+        .lightbulb:nth-child(3n) { animation-delay: 1s; background: #aaffaa; box-shadow: 0 0 15px 5px #55ff55; }
+
+        /* --- Balloons --- */
+        .balloons-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 50px;
+            background-color: var(--primary-red);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: floatUp infinite linear forwards;
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 18px;
+            width: 4px;
+            height: 8px;
+            background-color: inherit;
+        }
+
+        /* --- Curtains --- */
+        .curtain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: flex;
+            pointer-events: none;
+            display: none; /* Hidden until needed */
+        }
+
+        .curtain {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, #8b0000, #5c0000);
+            transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .curtain.left.open { transform: translateX(-100%); }
+        .curtain.right.open { transform: translateX(100%); }
+
+        /* --- Final Message Card --- */
+        .message-content {
+            text-align: left;
+        }
+        .message-content h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-red);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .message-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        /* --- Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            color: white;
+            margin: 0;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://raw.githubusercontent.com/devil67-ai/surprise/main/song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="bg-text">FOR MY DEAR FRIEND RADHIKA</div>
+
+    <div class="lights-container" id="lights">
+        <div class="lightbulb"></div><div class="lightbulb"></div>
+        <div class="lightbulb"></div><div class="lightbulb"></div>
+        <div class="lightbulb"></div><div class="lightbulb"></div>
+        <div class="lightbulb"></div><div class="lightbulb"></div>
+        <div class="lightbulb"></div><div class="lightbulb"></div>
+    </div>
+
+    <div class="balloons-container" id="balloons"></div>
+
+    <div class="curtain-container" id="curtains">
+        <div class="curtain left" id="curtain-left"></div>
+        <div class="curtain right" id="curtain-right"></div>
+    </div>
+
+    <div class="card-container" id="main-card">
+        
+        <div class="step active" id="step-1">
+            <h2>It's Our Special Day</h2>
+            <button onclick="nextStep(2)">Next</button>
+        </div>
+
+        <div class="step" id="step-2">
+            <h2>Haan... Aagyi  Madam ji</h2>
+            <button onclick="nextStep(3)">Show Me</button>
+        </div>
+
+        <div class="step" id="step-3">
+            <h2>Ready for your surprise?</h2>
+            <button onclick="nextStep(4)">Bring it on</button>
+        </div>
+
+        <div class="step" id="step-4">
+            <h2>The Stage is Set...</h2>
+            <button onclick="turnOnLights()">Turn on lights</button>
+        </div>
+
+        <div class="step" id="step-5">
+            <h2>Music makes it better...</h2>
+            <button onclick="playMusic()">Play Music</button>
+        </div>
+
+        <div class="step" id="step-6">
+            <h2>Let the colors fly!</h2>
+            <button onclick="flyBalloons()">Fly Balloons</button>
+        </div>
+
+        <div class="step" id="step-7">
+            <h2>Almost there...</h2>
+            <button onclick="openCurtains()">Show the message</button>
+        </div>
+
+        <div class="step" id="step-8">
+            <div class="message-content">
+                <h1>My Dearest Friend Radhika </h1>
+                <p>Today isn't just a date on the calendar, it's a celebration of the light you bring into my life.
+                     Every moment with you is like a frame from a beautiful movie, and I'm so lucky to be your co-star.
+                      This is the a small web persentation i have prepared for you. I hope that you will like it.
+                       Really you are very precious for me. First time a show you approximetly 1 year ago but i had no courage to tell you. 
+                       After a long time i tried on force of my friends and waited for months for your reply and finally here it is. 
+                       I hope that our friendship may last long like the fragnance of flower. This is the small demo of my art i have prepared for you only.</p>
+            </div>
+            <button onclick="nextStep(9)">Our Memories</button>
+        </div>
+
+        <div class="step" id="step-9">
+            <h1 style="font-family: 'Dancing Script'; color: var(--primary-red); margin-bottom: 20px; font-size: 2.5rem;">Moments in Time</h1>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/705227960_1728285405043104_5428662581943912496_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_ohc=hWGMKCiOgaUQ7kNvwGUtSCH&_nc_oc=AdpFpi6AnSxBcGebhv_i7OmPSoTrMI-0kdkJo0B_ryXyREtSzCp_H5dEcqWSgpU6AR2vt46-KrdyV4t5-NMX-SB-&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QF-tj3KMp9NJeA-5M5cruXmmBZR3yaMi3z3MC2qQuoTaw&oe=6A3C5FD5" alt="Memory 1">
+                    <div class="gallery-overlay"><p>You make my world beautiful</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/707207537_1551231889752737_34139317685331418_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=9f807c&_nc_ohc=wVwtj8le6EoQ7kNvwH2D_Q6&_nc_oc=AdofAgBDinpRIOchiGLFuKzoLUa8TmNuP-5ewysyGBaofpF-R1nCvJhnaAQy8aXeeH8XKwUPMJMakFitvRnt75be&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QEzsJY5XDBVYtkbLDF_bqWVjA-66g8KzYRmGioEszAmHQ&oe=6A3C76D2" alt="Memory 2">
+                    <div class="gallery-overlay"><p>My favorite smile</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/652764212_1974545186470610_8536738894135111960_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_ohc=a6sdXSgf0J8Q7kNvwF_lV2a&_nc_oc=Adoo0JKvOka_LOMnqyjdIX1sN0qSq-P-9HGkEdTmgj5iIta_1sltY2-w-UttGxC8Am38Z0gjzOWvmJvFsZ_7Q300&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QECHUPU-Uajae0qfA0jgkZI1gVd0iei7p3kkyLh9wzAcw&oe=6A3C7CFC" alt="Memory 3">
+                    <div class="gallery-overlay"><p>Perfect moments</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/706276844_1756075585516078_4837229835497282670_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_ohc=hZeQ8GU7z_YQ7kNvwHO8-HD&_nc_oc=AdryxuL-kSI21SZsmNRDuww3WyiMXhFN117HAjEEQSwX02medoIV9QXUHZweviZGlQBrpOk11qQETsvTo-ks4ENj&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QFTCwaIlnIFW4OYt-GLjw8F3TRSiduAFdmLoNCiqzV8rQ&oe=6A3C62FA" alt="Memory 4">
+                    <div class="gallery-overlay"><p>Our memories are forever</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/705437808_852110877938491_863749261794149782_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=9f807c&_nc_ohc=t1ODZqX2OZEQ7kNvwEPTgeu&_nc_oc=Adqzs3e3BVb8uNif-3A1DJWsYTP-lluwLpBFOw8UCKwzyhuSo17fNVJTH7-tkQaS-ILQrAG0Xt572VR2ppH2J51e&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QGiuFfHdhPDffBKmGZKHTldQ8-5d4U8TNI-7HY7GpVAjA&oe=6A3C4C02" alt="Memory 5">
+                    <div class="gallery-overlay"><p>May our friendship last long</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/707406126_1697232504794816_7069112851698453931_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=9f807c&_nc_ohc=bDNKPDx_-l4Q7kNvwFKGq3r&_nc_oc=Ado-QYlyqpjglmj43fbWQsSkUVnNDhLas0-odYQyZuFSb6T-h1PbSbisTLDv0h4X-keJ29WBu_SLu5If76_6DaVG&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5QHIrP0VmJmUtbVCwp1ol1Vl-xkZQnr9gWTzInG6eJrlEg&oe=6A3C7585" alt="Memory 6">
+                    <div class="gallery-overlay"><p> Still Waiting for you</p></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            // Show next step
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+
+        function turnOnLights() {
+            document.getElementById('lights').classList.add('visible');
+            nextStep(5);
+        }
+
+        function playMusic() {
+            // Note: Modern browsers block autoplaying audio without user interaction.
+            // Since they are clicking a button here, it will work.
+            const audio = document.getElementById('bg-music');
+            audio.play().catch(e => console.log("Audio play failed (maybe no source provided yet):", e));
+            nextStep(6);
+        }
+
+        function flyBalloons() {
+            const container = document.getElementById('balloons');
+            const colors = ['#ff3b3b', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+            
+            // Create 20 random balloons
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.classList.add('balloon');
+                    // Randomize position and color
+                    balloon.style.left = Math.random() * 100 + 'vw';
+                    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    balloon.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 4 to 7 seconds
+                    container.appendChild(balloon);
+                    
+                    // Cleanup balloon after animation
+                    setTimeout(() => balloon.remove(), 7000);
+                }, i * 200); // Stagger their release
+            }
+            nextStep(7);
+        }
+
+        function openCurtains() {
+            const curtains = document.getElementById('curtains');
+            const leftCurtain = document.getElementById('curtain-left');
+            const rightCurtain = document.getElementById('curtain-right');
+            const card = document.getElementById('main-card');
+
+            // Temporarily hide the main card and show the curtain container
+            card.style.opacity = '0';
+            setTimeout(() => {
+                curtains.style.display = 'flex';
+                // Trigger the next step content in the background
+                nextStep(8);
+                
+                // Wait a tiny bit, then trigger the CSS animation to open curtains
+                setTimeout(() => {
+                    leftCurtain.classList.add('open');
+                    rightCurtain.classList.add('open');
+                    card.style.opacity = '1'; // Fade the card back in behind the opening curtains
+                }, 100);
+
+                // Hide curtain container entirely after animation finishes
+                setTimeout(() => {
+                    curtains.style.display = 'none';
+                }, 3000);
+            }, 300); // Wait for card to fade out before showing curtains
+        }
+    </script>
+</body>
+</html>
