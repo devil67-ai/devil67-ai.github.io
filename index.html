@@ -2,448 +2,919 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise for my bestie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Responsive Portfolio Website</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        /* --- Base Styles & Variables --- */
-        :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #1c1c1c;
-            --primary-red: #ff3b3b;
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-        }
-
-        * {
-            box-sizing: border-box;
+         * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            border: none;
+            outline: none;
+            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --bg-color: #081b29;
+            --second-bg-color: #112e42;
+            --text-color: #ededed;
+            --main-color: #00eeff;
+        }
+
+        html {
+            font-size: 62.5%; /* 1rem = 10px */
+            overflow-x: hidden;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
-        /* --- Faint Background Text --- */
-        .bg-text {
-            position: absolute;
-            font-family: 'Dancing Script', cursive;
-            font-size: 8rem;
-            color: rgba(255, 59, 59, 0.25);
-            z-index: 0;
-            text-align: center;
-            pointer-events: none;
-        }
-
-        /* --- UI Card Container --- */
-        .card-container {
-            background-color: var(--card-bg);
-            padding: 40px 50px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 59, 59, 0.15);
-            border: 1px solid rgba(255, 59, 59, 0.3);
-            text-align: center;
-            z-index: 10;
-            position: relative;
-            max-width: 500px;
-            width: 90%;
-            transition: all 0.5s ease;
-        }
-
-        .step {
-            display: none;
-            animation: fadeIn 0.6s ease-in-out;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        /* --- Buttons --- */
-        button {
-            background: linear-gradient(45deg, #ff3b3b, #d90000);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.25s;
-            font-family: 'Poppins', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 59, 59, 0.6);
-        }
-
-        /* --- Fairy Lights --- */
-        .lights-container {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 1s;
-            pointer-events: none;
-        }
-
-        .lights-container.visible {
-            opacity: 1;
-        }
-
-        .lightbulb {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #fffbe0;
-            box-shadow: 0 0 15px 5px #fffaaa;
-            animation: twinkle 1.5s infinite alternate;
-        }
-
-        .lightbulb:nth-child(even) { animation-delay: 0.5s; background: #ffaaaa; box-shadow: 0 0 15px 5px #ff5555; }
-        .lightbulb:nth-child(3n) { animation-delay: 1s; background: #aaffaa; box-shadow: 0 0 15px 5px #55ff55; }
-
-        /* --- Balloons --- */
-        .balloons-container {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            overflow: hidden;
-        }
-
-        .balloon {
-            position: absolute;
-            bottom: -100px;
-            width: 40px;
-            height: 50px;
-            background-color: var(--primary-red);
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            animation: floatUp infinite linear forwards;
-        }
-
-        .balloon::before {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 18px;
-            width: 4px;
-            height: 8px;
-            background-color: inherit;
-        }
-
-        /* --- Curtains --- */
-        .curtain-container {
-            position: absolute;
+        /* Header & Navbar */
+        .header {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 50;
+            padding: 2rem 9%;
+            background: var(--bg-color);
             display: flex;
-            pointer-events: none;
-            display: none; /* Hidden until needed */
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: .3s;
         }
 
-        .curtain {
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, #8b0000, #5c0000);
-            transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        .header.sticky {
+            border-bottom: .1rem solid rgba(0, 0, 0, .2);
+            box-shadow: 0 .1rem 1rem rgba(0, 0, 0, .2);
         }
 
-        .curtain.left.open { transform: translateX(-100%); }
-        .curtain.right.open { transform: translateX(100%); }
-
-        /* --- Final Message Card --- */
-        .message-content {
-            text-align: left;
-        }
-        .message-content h1 {
-            font-family: 'Dancing Script', cursive;
-            color: var(--primary-red);
+        .logo {
             font-size: 2.5rem;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .message-content p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: var(--text-muted);
+            color: var(--text-color);
+            font-weight: 600;
+            cursor: default;
         }
 
-        /* --- Gallery --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+        .navbar a {
+            font-size: 1.7rem;
+            color: var(--text-color);
+            margin-left: 4rem;
+            transition: .3s;
+            font-weight: 500;
         }
 
-        .gallery-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--main-color);
+        }
+
+        #menu-icon {
+            font-size: 3.6rem;
+            color: var(--text-color);
             cursor: pointer;
+            display: none;
         }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
+        /* Global Section Rules */
+        section {
+            min-height: 100vh;
+            padding: 10rem 9% 2rem;
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
+        .heading {
+            text-align: center;
+            font-size: 4.5rem;
+            margin-bottom: 3rem;
         }
 
-        .gallery-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+        .heading span {
+            color: var(--main-color);
+        }
+
+        /* Home Section */
+        .home {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .home-content h3 {
+            font-size: 3.2rem;
+            font-weight: 700;
+        }
+
+        .home-content h3:nth-of-type(2) {
+            margin-bottom: 2rem;
+        }
+
+        span {
+            color: var(--main-color);
+        }
+
+        .home-content h1 {
+            font-size: 5.6rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .home-content p {
+            font-size: 1.6rem;
+            margin: 2rem 0 4rem;
+            max-width: 600px;
+        }
+
+        .social-media a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 4rem;
+            height: 4rem;
+            background: transparent;
+            border: .2rem solid var(--main-color);
+            border-radius: 50%;
+            font-size: 2rem;
+            color: var(--main-color);
+            margin: 3rem 1.5rem 3rem 0;
+            transition: .5s ease;
+        }
+
+        .social-media a:hover {
+            background: var(--main-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 1rem var(--main-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.8rem;
+            background: var(--main-color);
+            border-radius: 4rem;
+            box-shadow: 0 0 1rem var(--main-color);
+            font-size: 1.6rem;
+            color: var(--bg-color);
+            letter-spacing: .1rem;
+            font-weight: 600;
+            transition: .5s ease;
+        }
+
+        .btn:hover {
+            box-shadow: none;
+        }
+
+        /* Home Profile Image - Perfect Circle */
+        .home-img img {
+            width: 35vw;
+            height: 35vw; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            box-shadow: 0 0 2rem var(--main-color);
+            transition: .5s ease;
+        }
+
+        .home-img img:hover {
+            box-shadow: 0 0 4rem var(--main-color);
+        }
+
+        /* About Section */
+        .about {
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-            padding: 10px;
+            flex-direction: column;
+            background: var(--second-bg-color);
+        }
+
+        .about-content {
             text-align: center;
         }
 
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
+        .about-content h3 {
+            font-size: 2.6rem;
         }
 
-        .gallery-overlay p {
-            font-family: 'Dancing Script', cursive;
+        .about-content p {
+            font-size: 1.6rem;
+            margin: 2rem auto 3rem;
+            max-width: 800px;
+        }
+
+        /* Services Section */
+        .services h2 {
+            margin-bottom: 5rem;
+        }
+
+        .services-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .services-container .services-box {
+            flex: 1 1 30rem;
+            background: var(--second-bg-color);
+            padding: 3rem 2rem 4rem;
+            border-radius: 2rem;
+            text-align: center;
+            border: .2rem solid var(--bg-color);
+            transition: .5s ease;
+        }
+
+        .services-container .services-box:hover {
+            border-color: var(--main-color);
+            transform: scale(1.02);
+        }
+
+        .services-box i {
+            font-size: 7rem;
+            color: var(--main-color);
+        }
+
+        .services-box h3 {
+            font-size: 2.6rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .services-box p {
+            font-size: 1.6rem;
+            margin: 1rem 0 3rem;
+        }
+
+        /* Skills Section */
+        .skills {
+            background: var(--second-bg-color);
+        }
+
+        .skills-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5rem;
+        }
+
+        .skills-column {
+            flex: 1 1 40rem;
+        }
+
+        .skills-column .title {
+            font-size: 2.5rem;
+            margin: 0 0 1.5rem;
+            text-align: center;
+        }
+
+        .skills-box .skills-content {
+            padding: 2rem;
+        }
+
+        .skills-content .progress {
+            padding: 1rem 0;
+        }
+
+        .skills-content .progress h3 {
+            font-size: 1.7rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .skills-content .progress h3 i {
+            color: var(--main-color);
+            margin-right: .5rem;
+        }
+
+        .skills-content .progress .bar {
+            width: 100%;
+            height: 1.5rem;
+            background: var(--bg-color);
+            border-radius: .5rem;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        /* Bar starts at 0 for animation replay */
+        .skills-content .progress .bar span {
+            display: block;
+            height: 100%;
+            background: var(--main-color);
+            border-radius: .5rem;
+            width: 0; 
+            transition: width 1s ease-in-out; 
+        }
+
+        /* Professional Skills */
+        .professional-box {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .circle-progress {
+            position: relative;
+            width: 15rem;
+            height: 15rem;
+            border-radius: 50%;
+            background: conic-gradient(var(--main-color) var(--val), var(--bg-color) 0deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle-progress::before {
+            content: "";
+            position: absolute;
+            inset: 1rem;
+            background: var(--second-bg-color);
+            border-radius: 50%;
+        }
+
+        .circle-progress .progress-val, 
+        .circle-progress .text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .circle-progress .progress-val {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .circle-progress .text {
             font-size: 1.2rem;
-            color: white;
-            margin: 0;
+            margin-top: 0.5rem;
         }
 
-        /* --- Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Project Section Update */
+        .project-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
         }
 
-        @keyframes twinkle {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
+        .project-container .project-box {
+            position: relative;
+            border-radius: 2rem;
+            box-shadow: 0 0 1rem var(--bg-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: var(--second-bg-color);
+            transition: .5s ease;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+        .project-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 .5rem 2rem var(--main-color);
         }
 
+        .project-box img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .project-info h4 {
+            font-size: 2rem;
+            color: var(--main-color);
+            margin-bottom: 1rem;
+        }
+
+        .project-info p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .project-info .btn {
+            font-size: 1.4rem;
+            padding: .8rem 2rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--second-bg-color);
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            flex: 1 1 40rem;
+        }
+
+        .contact-info h3 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-item i {
+            color: var(--main-color);
+            font-size: 2rem;
+        }
+
+        .contact form {
+            flex: 1 1 40rem;
+            text-align: center;
+        }
+
+        .contact form .input-box {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .contact form .input-box input,
+        .contact form .input-box textarea {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.6rem;
+            color: var(--text-color);
+            background: var(--bg-color);
+            border-radius: .8rem;
+            margin: .7rem 0;
+        }
+
+        .contact form .input-box textarea {
+            resize: none;
+        }
+
+        .contact form .btn {
+            margin-top: 2rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 9%;
+            background: var(--bg-color);
+        }
+
+        .footer-text p {
+            font-size: 1.6rem;
+        }
+
+        /* ================= MEDIA QUERIES FOR RESPONSIVENESS ================= */
+
+        @media (max-width: 1200px) {
+            html { font-size: 55%; }
+        }
+
+        @media (max-width: 991px) {
+            .header { padding: 2rem 3%; }
+            section { padding: 10rem 3% 2rem; }
+            .services { padding-bottom: 7rem; }
+            .contact { min-height: auto; }
+            .footer { padding: 2rem 3%; }
+        }
+        @media (max-width: 450px) {
+            html { font-size: 50%; }
+            .contact form .input-box input { width: 100%; }
+        }
+
+
+        @media (max-width: 768px) {
+            #menu-icon { display: block; }
+            .navbar {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                padding: 1rem 3%;
+                background: var(--bg-color);
+                border-top: .1rem solid rgba(0, 0, 0, .2);
+                box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+                display: none;
+            }
+            .navbar.active { display: block; }
+            .navbar a {
+                display: block;
+                font-size: 2rem;
+                margin: 3rem 0;
+                text-align: center;
+            }
+            .home {
+                flex-direction: column-reverse;
+                text-align: center;
+                margin-top: 5rem;
+            }
+            .home-content h3 { font-size: 2.6rem; }
+            .home-content h1 { font-size: 5rem; }
+            .home-content p { margin: 2rem auto 4rem; }
+            .home-img img {
+                width: 70vw;
+                height: 70vw; 
+                margin-bottom: 4rem;
+            }
+            .about-content h3 { font-size: 2.4rem; }
+            .contact-container { flex-direction: column; }
+        }
+
+        
+        #input{
+             border: .2rem solid var(--main-color);
+             box-shadow: 0 0 1rem var(--bg-color);
+        }
+        #input:hover{
+              border: .2rem solid var(--main-color);
+              box-shadow: 0 0 1rem var(--main-color);
+        }
+        #end-msg{
+            opacity:0.5;
+        }
+    </style>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="https://raw.githubusercontent.com/devil67-ai/surprise/main/song.mp3" type="audio/mpeg">
-    </audio>
+    <header class="header">
+        <a href="#" class="logo">Welcome to my web</a>
 
-    <div class="bg-text">MY SOUL SISTER BESTIE</div>
+        <i class='bx bx-menu' id="menu-icon"></i>
 
-    <div class="lights-container" id="lights">
-        <div class="lightbulb"></div><div class="lightbulb"></div>
-        <div class="lightbulb"></div><div class="lightbulb"></div>
-        <div class="lightbulb"></div><div class="lightbulb"></div>
-        <div class="lightbulb"></div><div class="lightbulb"></div>
-        <div class="lightbulb"></div><div class="lightbulb"></div>
-    </div>
+        <nav class="navbar">
+            <a href="#home" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#skills">Skills</a>
+            <a href="#project">Project</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
 
-    <div class="balloons-container" id="balloons"></div>
+    <section class="home" id="home">
+        <div class="home-content">
 
-    <div class="curtain-container" id="curtains">
-        <div class="curtain left" id="curtain-left"></div>
-        <div class="curtain right" id="curtain-right"></div>
-    </div>
+           <h3>Hello, It's Me</h3>
+            <h1>Amrit kumar (devil)</h1>
+            <h3>And I'm a <span class="multiple-text"></span></h3>
+            <p>I'm a web Designer with extensive experience for over 1 years. expertise is to create and website design, Frontend design, and many more...</p>
 
-    <div class="card-container" id="main-card">
-        
-        <div class="step active" id="step-1">
-            <h2>I have something special for you</h2>
-            <button onclick="nextStep(2)">Next</button>
-        </div>
 
-        <div class="step" id="step-2">
-            <h2>Haan... Aagyi  Madam ji</h2>
-            <button onclick="nextStep(3)">Show Me</button>
-        </div>
-
-        <div class="step" id="step-3">
-            <h2>Ready for your surprise?</h2>
-            <button onclick="nextStep(4)">Bring it on</button>
-        </div>
-
-        <div class="step" id="step-4">
-            <h2>The Stage is Set...</h2>
-            <button onclick="turnOnLights()">Turn on lights</button>
-        </div>
-
-        <div class="step" id="step-5">
-            <h2>Music makes it better...</h2>
-            <button onclick="playMusic()">Play Music</button>
-        </div>
-
-        <div class="step" id="step-6">
-            <h2>Let the colors fly!</h2>
-            <button onclick="flyBalloons()">Fly Balloons</button>
-        </div>
-
-        <div class="step" id="step-7">
-            <h2>Almost there...</h2>
-            <button onclick="openCurtains()">Show the message</button>
-        </div>
-
-        <div class="step" id="step-8">
-            <div class="message-content">
-                <h1>My soul sister bestie </h1>
-                <p>Dear shreyaa 
-                     You are the one who brings so much happiness into my life, and you are the closest person to my heartbeats.
-                       "We are sisters/best friends. If you fall, I will help you up... after 
-                          I finish laughing! Love you!""You're the sister I got and the best friend I chose.
-                            We make a perfect team of weirdos."Having a sister who is also your best friend is a blessing like no other.
-                              Thanks for understanding me even when I don't speak</p>
+            <div class="social-media">
+                <a href="https://chat.whatsapp.com/Blyfy0OCbUI4ppBSTdjQx3"><i class='bx bxl-whatsapp'></i></a>
+                <a href="https://www.instagram.com/_devil_boy45?igsh=MWRwYXBmMng0Z"><i class='bx bxl-instagram'></i></a>
+                <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWsmCLCrWcHjSjndRBTjvWdZxNwFdMlFJNtCCsFJwvqlHcZVRxfkQRptpWDWrRZsJGjFTFcfL"><i class='bx bx-envelope'></i></a>
+                <a href="https://github.com/devil67-ai"><i class='bx bxl-github'></i></a>
             </div>
-            <button onclick="nextStep(9)">Our Memories</button>
+            
+            <a href="#about" class="btn">More About Me</a>
         </div>
 
-        <div class="step" id="step-9">
-            <h1 style="font-family: 'Dancing Script'; color: var(--primary-red); margin-bottom: 20px; font-size: 2.5rem;">Moments in Time</h1>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat3-3.fna.fbcdn.net/v/t1.15752-9/710278984_2437267530104179_967201555054972117_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9f807c&_nc_ohc=dHL73XJUnrEQ7kNvwHAxaai&_nc_oc=AdplGzBTLTMsQ8VEC6l7Mcoa4yJD60eHOR9STBuuCZJaVGdK7Lfjyur9ikRcXZuNz7llNvgoFruISkpNYmvLldju&_nc_zt=23&_nc_ht=scontent.fpat3-3.fna&_nc_ss=786a8&oh=03_Q7cD5gHMI46Md-ACkvSlViLPiuGd3TBsQ8cPBE-99uMO1C9sTA&oe=6A4632DA" alt="Memory 1">
-                    <div class="gallery-overlay"><p>You make my world beautiful</p></div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat3-2.fna.fbcdn.net/v/t1.15752-9/714597836_2209144843214680_4012606183144698069_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_ohc=tRY6SCCwd4cQ7kNvwGliURO&_nc_oc=AdptPVdmAAilMpSdUWQUQMayMHdQOUW1X_MM4LeTIKHwTsnnZQ3_kBZOLAW9uXZQdvJDMb6Ai6RrAdFmrdOXOQlU&_nc_zt=23&_nc_ht=scontent.fpat3-2.fna&_nc_ss=786a8&oh=03_Q7cD5gFyHHaL2NLar6ByBOAfDIq-uxNfq44yd2IEHv4cAwKTOg&oe=6A462FC2" alt="Memory 2">
-                    <div class="gallery-overlay"><p>My favorite smile</p></div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat3-1.fna.fbcdn.net/v/t1.15752-9/708500936_1313082523599045_1424914077332169676_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=9f807c&_nc_ohc=t3Jyl_IQwjgQ7kNvwG4MjHg&_nc_oc=AdoIhHFeuXhPD-1sFK9p1Eoc8_EAI_RQoLBf2435t7nCYsU7aDKgEpikbwyYVYlAjR029iyoeCFsrOgjd0ubaA8l&_nc_zt=23&_nc_ht=scontent.fpat3-1.fna&_nc_ss=786a8&oh=03_Q7cD5gE3j4ygp-G4PjMXyLcgoyrt_eYq5RgMFHEvxGzR5sGLHA&oe=6A463C0A" alt="Memory 3">
-                    <div class="gallery-overlay"><p>Perfect moments</p></div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat11-3.fna.fbcdn.net/v/t1.15752-9/710737710_2150077275783798_8327817098471581219_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_ohc=qfbFExlih5QQ7kNvwFQ9zjT&_nc_oc=AdoUUHknyMLHAsp-UYdCk78uTkUwVDGgP6uaFVi-CLby9DJ8WOvzUtkKcfMVtilSt6VI4dJMIIp1GuN76Lee4Vle&_nc_zt=23&_nc_ht=scontent.fpat11-3.fna&_nc_ss=786a8&oh=03_Q7cD5gGzb7NjKaf2UH1f4ba_gmN9YF9BaoreKoWJqwOb6eYzXg&oe=6A463514" alt="Memory 4">
-                    <div class="gallery-overlay"><p>Our memories are forever</p></div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat3-2.fna.fbcdn.net/v/t1.15752-9/711288657_1536680701382988_941748715563324776_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=9f807c&_nc_ohc=40SBH67JKq0Q7kNvwGdotFN&_nc_oc=AdqfNYy-LJmDNTY74FQx17nZqze-oDXLWviH9t1GFA9viTg3fo1IbIqGPIAHhnzdVcP7EhcvTSvMgTEwTECZPRy4&_nc_zt=23&_nc_ht=scontent.fpat3-2.fna&_nc_ss=786a8&oh=03_Q7cD5gG0VPUd3vUiWVEeNnv_KmF8zHYvaSXnnE5pCKC-M8_Y6w&oe=6A462478" alt="Memory 5">
-                    <div class="gallery-overlay"><p>May our friendship last long</p></div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://scontent.fpat11-3.fna.fbcdn.net/v/t1.15752-9/710372928_1313518314201609_4392554250626678901_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_ohc=YervdflWI6oQ7kNvwHDRtWL&_nc_oc=AdrapL8DuPYcqwAmz9Lb-HFrjU9mhUVqvYuNtkEjbwTZHxYOeH6mLMs1QIS2F2rqOYnWB-Qa1f-adcM01GSoqfnJ&_nc_zt=23&_nc_ht=scontent.fpat11-3.fna&_nc_ss=786a8&oh=03_Q7cD5gHC_yMwnwEdEpgng4_Pju6YHUlThVQe1MesHA4K20Lz6g&oe=6A464B82" alt="Memory 6">
-                    <div class="gallery-overlay"><p> You are my soul</p></div>
-                </div>
+        <div class="home-img">
+            <img src="dp.jpg" alt="Profile Picture">
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="heading">About <span>Me</span></h2>
+            <h3>Full Stack Developer!</h3>
+            <p>I am a skilled web designer with over 1 years of experience in the industry.
+             My passion lies in creating captivating website designs and implementing them through frontend development.
+             I take pride in staying up-to-date with current design trends and leveraging my creativity to produce visually appealing and user-friendly websites. 
+             Throughout my career, I have developed a deep understanding of user experience (UX) and user interface (UI) principles.
+              By putting myself in the shoes of the end-users, I strive to create intuitive and seamless browsing experiences.
+               I believe that a well-designed website should not only look visually appealing but also provide a smooth and enjoyable interaction for visitors. 
+               When starting a new project, I thoroughly research and analyze the target audience and the client's specific requirements. 
+               This enables me to tailor my designs to meet their expectations and deliver a unique online presence that aligns with their brand identity.</p>
+            <a href="#" class="btn">More About Me</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="heading">My <span>Services</span></h2>
+
+        <div class="services-container">
+            <div class="services-box">
+                 <i class='bx bx-code-alt'></i>
+                <h3>UI/UX Design</h3>
+                <p>I am specially a frontent developer and expert in developing UI/UX Design.</p>
+                <a href="#" class="btn">Learn more</a>
+            </div>
+
+            <div class="services-box">
+                 <i class='bx bx-crop'></i>
+                <h3>Web Design</h3>
+                <p>I have created many project such as clone of official Amazon website , animated website for birthday wishing and more..</p>
+                <a href="#" class="btn">Learn more</a>
+            </div>
+
+            <div class="services-box">
+                <i class='bx bxl-apple'></i>
+                <h3>App Design</h3>
+                <p>I have designed many instresting games and apps for many schools , shops , etc...</p>
+                <a href="#" class="btn">Learn more</a>
             </div>
         </div>
+    </section>
 
-    </div>
+    <section class="skills" id="skills">
+        <h2 class="heading">My <span>Skills</span></h2>
+
+        <div class="skills-row">
+            <div class="skills-column">
+                <h3 class="title">Technical Skills</h3>
+                
+                <div class="skills-box">
+                    <div class="skills-content">
+                        <div class="progress">
+                            <h3><i class='bx bxl-html5'></i> HTML <span>90%</span></h3>
+                            <div class="bar"><span data-width="90%"></span></div>
+                        </div>
+                        <div class="progress">
+                            <h3><i class='bx bxl-css3'></i> CSS <span>62%</span></h3>
+                            <div class="bar"><span data-width="62%"></span></div>
+                        </div>
+                        <div class="progress">
+                            <h3><i class='bx bxl-javascript'></i> Javascript <span>81%</span></h3>
+                            <div class="bar"><span data-width="81%"></span></div>
+                        </div>
+                        <div class="progress">
+                            <h3><i class='bx bxl-python'></i> Python <span>52%</span></h3>
+                            <div class="bar"><span data-width="52%"></span></div>
+                        </div>
+                        <div class="progress">
+                            <h3><i class='bx bxl-react'></i> react <span>75%</span></h3>
+                            <div class="bar"><span data-width="75%"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-column">
+                <h3 class="title">Professional Skills</h3>
+
+                <div class="professional-box">
+                    <div class="circle-progress" data-percent="90" style="--val: 0deg;">
+                        <span class="progress-val">0%</span>
+                        <span class="text">Creativity</span>
+                    </div>
+                    <div class="circle-progress" data-percent="65" style="--val: 0deg;">
+                        <span class="progress-val">0%</span>
+                        <span class="text">Communication</span>
+                    </div>
+                    <div class="circle-progress" data-percent="75" style="--val: 0deg;">
+                        <span class="progress-val">0%</span>
+                        <span class="text">Problem Solving</span>
+                    </div>
+                    <div class="circle-progress" data-percent="85" style="--val: 0deg;">
+                        <span class="progress-val">0%</span>
+                        <span class="text">Teamwork</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project" id="project">
+        <h2 class="heading">Latest <span>Project</span></h2>
+
+        <div class="project-container">
+            <div class="project-box">
+                <img src="web.png" alt="Project 1">
+                <div class="project-info">
+                    <h4>UI/UX Project</h4>
+                    <p>A comprehensive redesign focusing on user experience, accessibility, and modern interface aesthetics.</p>
+                    <a href="https://your-link-here.com" target="_blank" class="btn">Visit</a>
+                </div>
+            </div>
+            <div class="project-box">
+                <img src="web2.png" alt="Project 2">
+                <div class="project-info">
+                    <h4>Website Development</h4>
+                    <p>A fully responsive e-commerce platform built with HTML, CSS, JavaScript, and a robust backend.</p>
+                    <a href="https://your-link-here.com" target="_blank" class="btn">Visit</a>
+                </div>
+            </div>
+            <div class="project-box">
+                <img src="web3.png" alt="Project 3">
+                <div class="project-info">
+                    <h4>App Design</h4>
+                    <p>Mobile application design ensuring a seamless flow and intuitive interactions across devices.</p>
+                    <a href="https://your-link-here.com" target="_blank" class="btn">Visit</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact <span>Me</span></h2>
+
+        <div class="contact-container">
+            <div class="contact-info">
+               <h3>Let's Work Together</h3>
+                <p>If you want to design website , web-application or surprise-presentation then you can mail me or send message on whatsapp.
+
+                    I also work with collebrators if you are intrested then you can tell me.
+
+                </p>
+                
+                <div class="info-item">
+                    <i class='bx bx-envelope'></i> devilgamer852212@gmail.com
+                </div>
+                <div class="info-item">
+                    <i class='bx bx-phone'></i> 0123456789
+                </div>
+                
+                <div class="social-media">
+                    <a href="https://chat.whatsapp.com/Blyfy0OCbUI4ppBSTdjQx3" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
+                    <a href="https://www.instagram.com/_devil_boy45?igsh=MWRwYXBmMng0ZnludA==" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWsmCLCrWcHjSjndRBTjvWdZxNwFdMlFJNtCCsFJwvqlHcZVRxfkQRptpWDWrRZsJGjFTFcfL" aria-label="Email"><i class='bx bx-envelope'></i></a>
+                    <a href="https://github.com/devil67-ai" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+
+            <form action="#">
+                <div class="input-box">
+                    <input id="input" type="text" placeholder="Enter Your Name">
+                </div>
+                <div class="input-box">
+                    <input id="input" type="email" placeholder="Enter Your Email">
+                </div>
+                <div class="input-box">
+                    <input id="input" type="text" placeholder="Enter Your Subject">
+                </div>
+                <div class="input-box">
+                    <textarea id="input" name="" id="" cols="30" rows="10" placeholder="Enter Your Message"></textarea>
+                </div>
+                <input type="submit" value="Submit" class="btn">
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p id="end-msg">Developed with love by Amrit Kumar(Devil) © 2026</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 
     <script>
-        let currentStep = 1;
+        // Toggle Mobile Icon Menu
+        let menuIcon = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.navbar');
 
-        function nextStep(step) {
-            // Hide current step
-            document.getElementById(`step-${currentStep}`).classList.remove('active');
-            // Show next step
-            currentStep = step;
-            document.getElementById(`step-${currentStep}`).classList.add('active');
-        }
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        };
 
-        function turnOnLights() {
-            document.getElementById('lights').classList.add('visible');
-            nextStep(5);
-        }
+        // Typing Animation
+        const typed = new Typed('.multiple-text', {
+            strings: ['Web Designer', 'Frontend Developer', 'Web Developer'],
+            typeSpeed: 100,
+            backSpeed: 100,
+            backDelay: 1000,
+            loop: true
+        });
 
-        function playMusic() {
-            // Note: Modern browsers block autoplaying audio without user interaction.
-            // Since they are clicking a button here, it will work.
-            const audio = document.getElementById('bg-music');
-            audio.play().catch(e => console.log("Audio play failed (maybe no source provided yet):", e));
-            nextStep(6);
-        }
+        // Setup variables for scroll animations
+        let sections = document.querySelectorAll('section');
+        let navLinks = document.querySelectorAll('header nav a');
+        let header = document.querySelector('header');
+        
+        // --- SKILLS REPLAY ANIMATION VARIABLES ---
+        let skillsSection = document.querySelector('#skills');
+        let progressBars = document.querySelectorAll('.skills-content .progress .bar span');
+        let circleProgresses = document.querySelectorAll('.circle-progress');
+        let isSkillsAnimated = false; 
 
-        function flyBalloons() {
-            const container = document.getElementById('balloons');
-            const colors = ['#ff3b3b', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-            
-            // Create 20 random balloons
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const balloon = document.createElement('div');
-                    balloon.classList.add('balloon');
-                    // Randomize position and color
-                    balloon.style.left = Math.random() * 100 + 'vw';
-                    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    balloon.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 4 to 7 seconds
-                    container.appendChild(balloon);
+        window.onscroll = () => {
+            let top = window.scrollY;
+
+            // Highlight active navigation links based on scroll position
+            sections.forEach(sec => {
+                let offset = sec.offsetTop - 150;
+                let height = sec.offsetHeight;
+                let id = sec.getAttribute('id');
+
+                if(top >= offset && top < offset + height) {
+                    navLinks.forEach(links => {
+                        links.classList.remove('active');
+                        document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+                    });
+                };
+            });
+
+            // Sticky navbar
+            header.classList.toggle('sticky', top > 100);
+
+            // Remove toggle icon and navbar when clicking a nav link (scrolling)
+            menuIcon.classList.remove('bx-x');
+            navbar.classList.remove('active');
+
+            // --- SKILLS ANIMATION REPLAY LOGIC ---
+            // Calculate boundaries for when the skills section is visible on screen
+            let skillsOffset = skillsSection.offsetTop - window.innerHeight + 200; 
+            let skillsBottom = skillsSection.offsetTop + skillsSection.offsetHeight;
+
+            // Check if the user is currently looking at the skills section
+            if (top >= skillsOffset && top < skillsBottom) {
+                // If the animation hasn't played yet during this "visit", play it
+                if (!isSkillsAnimated) {
                     
-                    // Cleanup balloon after animation
-                    setTimeout(() => balloon.remove(), 7000);
-                }, i * 200); // Stagger their release
+                    // Animate Technical Skills (Lines)
+                    progressBars.forEach(bar => {
+                        let targetWidth = bar.getAttribute('data-width');
+                        bar.style.width = targetWidth; 
+                    });
+
+                    // Animate Professional Skills (Circles)
+                    circleProgresses.forEach(circle => {
+                        let targetPercent = parseInt(circle.getAttribute('data-percent'));
+                        let currentPercent = 0;
+                        let progressVal = circle.querySelector('.progress-val');
+
+                        // Clear any existing timer just in case
+                        if (circle.dataset.interval) {
+                            clearInterval(circle.dataset.interval);
+                        }
+
+                        // Start counting up
+                        let interval = setInterval(() => {
+                            currentPercent++;
+                            let currentDegree = (currentPercent / 100) * 360;
+                            
+                            circle.style.setProperty('--val', `${currentDegree}deg`);
+                            progressVal.innerText = `${currentPercent}%`;
+
+                            // Stop at target percentage
+                            if (currentPercent >= targetPercent) {
+                                clearInterval(interval);
+                            }
+                        }, 15); // Animation speed
+                        
+                        // Save the timer so we can reset it later
+                        circle.dataset.interval = interval; 
+                    });
+
+                    // Lock the animation so it doesn't replay continuously while scrolling inside the section
+                    isSkillsAnimated = true; 
+                }
+            } else {
+                // The user has scrolled AWAY from the skills section!
+                // Reset everything to 0 so it can replay next time they scroll back.
+                if (isSkillsAnimated) {
+                    
+                    // Reset Lines
+                    progressBars.forEach(bar => {
+                        bar.style.width = '0';
+                    });
+
+                    // Reset Circles
+                    circleProgresses.forEach(circle => {
+                        if (circle.dataset.interval) {
+                            clearInterval(circle.dataset.interval);
+                        }
+                        circle.style.setProperty('--val', '0deg');
+                        circle.querySelector('.progress-val').innerText = '0%';
+                    });
+
+                    // Unlock the animation
+                    isSkillsAnimated = false; 
+                }
             }
-            nextStep(7);
-        }
-
-        function openCurtains() {
-            const curtains = document.getElementById('curtains');
-            const leftCurtain = document.getElementById('curtain-left');
-            const rightCurtain = document.getElementById('curtain-right');
-            const card = document.getElementById('main-card');
-
-            // Temporarily hide the main card and show the curtain container
-            card.style.opacity = '0';
-            setTimeout(() => {
-                curtains.style.display = 'flex';
-                // Trigger the next step content in the background
-                nextStep(8);
-                
-                // Wait a tiny bit, then trigger the CSS animation to open curtains
-                setTimeout(() => {
-                    leftCurtain.classList.add('open');
-                    rightCurtain.classList.add('open');
-                    card.style.opacity = '1'; // Fade the card back in behind the opening curtains
-                }, 100);
-
-                // Hide curtain container entirely after animation finishes
-                setTimeout(() => {
-                    curtains.style.display = 'none';
-                }, 3000);
-            }, 300); // Wait for card to fade out before showing curtains
-        }
+        };
     </script>
 </body>
 </html>
