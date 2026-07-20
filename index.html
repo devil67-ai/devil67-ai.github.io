@@ -1,0 +1,2069 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Audio Lab</title>
+    <meta
+      name="description"
+      content="Audio Lab — upload, play and manage your local music library with metadata scanning and playlists."
+    />
+
+    <!-- ===================== PWA: Web App Manifest ===================== -->
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- ===================== PWA: Theme / status bar color ===================== -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="background-color" content="#000000" />
+
+    <!-- ===================== PWA: Icons / favicons ===================== -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+    <!-- ===================== PWA: iOS "Add to Home Screen" support ===================== -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Audio Lab" />
+
+    <!-- ===================== PWA: Windows tile support ===================== -->
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-TileImage" content="icon-192.png" />
+
+    <!-- FIXED: Corrected CDN link typo for Font Awesome (clouddflare -> cloudflare) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+  </head>
+  <body>
+    <audio id="music">
+      <source src="ranjhana.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="main-box">
+      <!-- LOGIN AND REGISTRATION VIEW -->
+      <div class="login-page" id="login_pp">
+        <div class="login-center" id="login_center">
+          <div class="login-info">
+            <h2>WELCOME BACK!!</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat
+              dolores, minima aliquam modi ilo in? Nemo temporibus autem officia
+              minus nostrum debitis quisquam architecto consectetur quam?
+            </p>
+            <button id="login-switch">CREATE NEW -></button>
+            <button class="skip_btn">SKIP</button>
+          </div>
+          <!-- FIXED: Removed trailing whitespace bug in target ID attribute -->
+          <form id="login-form">
+            <h2>ENTER YOUR DETAILS</h2>
+            <h2 id="login-error-field" class="hide" style="color: yellow">
+              ERROR!!
+            </h2>
+            <input
+              id="username-login"
+              placeholder="enter your username"
+              required
+              type="text"
+            />
+            <input
+              id="password-login"
+              placeholder="enter your password"
+              required
+              type="password"
+            />
+            <button id="login-submit">LOGIN</button>
+            <p>Don't have an account? create new</p>
+          </form>
+        </div>
+
+        <!-- NEW USER REGISTRATION INTERFACE -->
+        <div class="createnew-center" id="user_center">
+          <div class="createnew-info">
+            <h2>welcome! create your account</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat
+              dolores, minima aliquam modi illo in? Nemo temporibus autem
+              officia minus nostrum debitis quisquam architecto consectetur
+              quam?
+            </p>
+            <button id="createnew-switch">LOGIN</button>
+            <button class="skip_btn">SKIP</button>
+          </div>
+          <form id="createnew-form">
+            <h2>ENTER YOUR DETAILS</h2>
+            <h2 id="login-error" class="hide" style="color: yellow">ERROR!!</h2>
+            <input
+              id="username-new"
+              placeholder="create your username"
+              required
+              type="text"
+            />
+            <input
+              id="password-new"
+              placeholder="create your password"
+              required
+              type="password"
+            />
+            <button id="createnew-submit">SUBMIT</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- LOADING DISPLAY SCREEN -->
+      <div class="loading-page" id="loading_pp">
+        <div class="middle-setup">
+          <div class="loading-center-box">
+            <div class="top-msg"><i>Welcome to</i></div>
+            <div class="center-logo">
+              <div class="first-logo"></div>
+              <div class="second-logo"></div>
+              <div class="third-logo"></div>
+              <div class="second-logo"></div>
+              <div class="first-logo"></div>
+            </div>
+            <div class="bottom-msg">
+              <p><i>Audio Lab</i></p>
+              <br />
+              <p><i>Made with ♥️ by devil</i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN APPLICATION INTERFACE CONTAINER -->
+      <div class="home-page hide" id="user_home">
+        <!-- BACKDROP SHOWN WHILE THE MOBILE LIBRARY DRAWER IS OPEN -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <!-- APP SIDEBAR / LEFT SIDE NAVIGATION CONTROLS -->
+        <div class="left-side">
+          <div class="top-part">
+            <div class="my-logo">
+              <div class="home-logo">
+                <div class="logo-stick1"></div>
+                <div class="logo-stick2"></div>
+                <div class="logo-stick3"></div>
+                <div class="logo-stick2"></div>
+                <div class="logo-stick1"></div>
+              </div>
+              <div class="home-name">
+                <h3><i>Audio Lab</i></h3>
+              </div>
+            </div>
+            <div class="my-msg">welcome here</div>
+          </div>
+          <div class="playlist-name">
+            <div class="playlist-home">
+              <div class="library-icon">🗂️</div>
+              <div class="library-text">
+                <h3><i>LIBRARY</i></h3>
+              </div>
+            </div>
+            <div class="current-playlist">current playlist</div>
+          </div>
+          <div class="song-container" id="song-container"></div>
+          <footer id="left-footer">
+            <a href="#">instagram</a>
+            <a href="#">facebook</a>
+            <a href="#">youtube</a>
+            <a href="#">twitter</a>
+          </footer>
+        </div>
+
+        <!-- APP CONTENT BODY / RIGHT SIDE CONTAINER -->
+        <div class="right-side">
+          <nav class="navigation">
+            <div class="nav-left">
+              <!-- MOBILE-ONLY BRAND LOGO (shown left of nav bar on small screens) -->
+              <div class="mobile-brand" id="mobile-brand">
+                <div class="mobile-logo-icon">
+                  <div class="logo-stick1"></div>
+                  <div class="logo-stick2"></div>
+                  <div class="logo-stick3"></div>
+                  <div class="logo-stick2"></div>
+                  <div class="logo-stick1"></div>
+                </div>
+                <span class="mobile-brand-text"><i>Audio Lab</i></span>
+              </div>
+              <button class="nav-button home-btn" id="home-btn">
+                <i>Home</i>
+              </button>
+              <button class="nav-button" id="control-btn">
+                <i>Control</i>
+              </button>
+              <button class="nav-button" id="lab-btn"><i>Lab</i></button>
+              <button class="nav-button" id="account-btn">
+                <i>Account</i>
+              </button>
+              <button class="nav-button" id="about-btn"><i>About us</i></button>
+            </div>
+            <div class="nav-right">
+              <button class="nav-button-right" id="login_btn">
+                <i>Login</i>
+              </button>
+              <!-- MOBILE-ONLY MENU ICON (opens the library sidebar drawer) -->
+              <button
+                class="menu-toggle-btn"
+                id="menu-toggle"
+                aria-label="Open menu"
+              >
+                <i class="fa-solid fa-bars"></i>
+              </button>
+            </div>
+          </nav>
+
+          <!-- CONTENT PAGE BODY ROUTING -->
+          <div class="home-remain-part" id="home-page">
+            <!-- PLAYLIST CARDS SECTION CONTAINER -->
+            <div class="cards-section" id="cards-section">
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>English hits</i></h3>
+                </div>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t2.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>Hindi hits</i></h3>
+                </div>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>90s hits</i></h3>
+                </div>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t2.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>Phonks</i></h3>
+                </div>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>Liked songs</i></h3>
+                </div>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-image"><img src="t.jpg" /></div>
+                <div class="playlist-info">
+                  <h3><i>Local hits</i></h3>
+                </div>
+              </div>
+              <div class="upload-file">
+                <label for="file-input" id="file"
+                  ><i>Upload local files</i></label
+                >
+                <input
+                  id="file-input"
+                  type="file"
+                  accept=".mp3 , audio/mpeg"
+                  multiple
+                />
+              </div>
+            </div>
+
+            <!-- AUDIO EFFECTS LAB MODULE PAGE -->
+            <div class="hide" id="lab-page">
+              <div class="heading-0">
+                <i>Explore our real time music effects lab</i>
+              </div>
+              <div class="heading-1"><i>Stem Extraction</i></div>
+              <div class="list-1">
+                <button class="lab-button">normal</button>
+                <button class="lab-button">instrumental</button>
+                <button class="lab-button">vocal</button>
+                <button class="lab-button">noise reduction</button>
+              </div>
+              <div class="heading-2"><i>Environment & Speed</i></div>
+              <div class="list-2">
+                <select class="select-lab">
+                  <option value="0">bass boost off</option>
+                  <option value="5">light bass</option>
+                  <option value="10">medium bass</option>
+                  <option value="20">heavy bass</option>
+                </select>
+                <select class="select-lab">
+                  <option value="off">off</option>
+                  <option value="small">small room</option>
+                  <option value="large">large room</option>
+                  <option value="hall">hall</option>
+                </select>
+                <button class="lab-button"><i>slowed + reverb</i></button>
+                <button class="lab-button"><i>nightcore</i></button>
+              </div>
+              <div class="heading-3">Spatial Effects (Use headphone)</div>
+              <div class="list-3">
+                <button class="lab-button"><i>auto panner</i></button>
+                <button class="lab-button"><i>3d stereo</i></button>
+                <button class="lab-button"><i>8d surround</i></button>
+              </div>
+            </div>
+
+            <!-- DYNAMIC ACCOUNT OVERVIEW SECTOR -->
+            <div class="hide" id="account-section">
+              <div class="account-dp">
+                <div class="dp-img">
+                  <img
+                    src="t.jpg"
+                    id="account-avatar"
+                    onerror="this.src = 't.jpg'"
+                  />
+                </div>
+                <!-- Dynamic reactive DOM target container -->
+                <div class="account-username" id="display-profile-username">
+                  _Devil-.x._Coder
+                </div>
+              </div>
+              <div class="edit-account" id="acc-action-edit">
+                <div class="set-icon">🖍️</div>
+                <div class="set-msg">Edit Username</div>
+              </div>
+              <div class="settings2" id="acc-action-settings">
+                <div class="set-icon">⚙️</div>
+                <div class="set-msg">Settings</div>
+              </div>
+              <div class="contact-us" id="acc-action-contact">
+                <div class="set-icon">🧑‍🧑‍🧒‍🧒</div>
+                <div class="set-msg">Contact us</div>
+              </div>
+              <!-- FIXED: Corrected class item selector syntax mismatch -->
+              <div class="feedback-item" id="acc-action-feedback">
+                <div class="set-icon">👍</div>
+                <div class="set-msg">Feedback System</div>
+              </div>
+            </div>
+
+            <!-- FEEDBACK COLLECTION MODULE CONTAINER -->
+            <div class="hide" id="feedback-section">
+              <div class="about-us">
+                <div class="heading-top">
+                  <h2><i>message from developer</i></h2>
+                </div>
+                <div class="message-bottom">
+                  <h2 style="align-self: first baseline"><i>hello user,</i></h2>
+                  <p>
+                    <i
+                      >Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Molestias magnam non cum fugiat minus maxime consectetur
+                      doloribus nemo atque, commodi amet ab sequi ex ullam
+                      necessitatibus pariatur officiis velit. Laudantium.
+                      Tenetur dignissimos molestias perspiciatis animi amet
+                      deserunt earum dolore, voluptas quo aspernatur sequi et,
+                      fugit, perferendis quas sed recusandae culpa voluptatem
+                      est nobis. Reprehenderit eos ipsum, alias illum totam
+                      repudiandae!</i
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="feedback">
+                <!-- FUNCTIONAL ASYNC FORM ROUTING FOR USER CONTEXT FEEDBACK EMAIL PROCESSING -->
+                <form id="feedback-form">
+                  <h2><i>your feedback matters to us</i></h2>
+                  <input
+                    id="sender-name"
+                    name="name"
+                    type="text"
+                    placeholder="enter your name"
+                    required
+                  />
+                  <input
+                    type="email"
+                    id="sender-gmail"
+                    name="email"
+                    placeholder="enter your gmail"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="message"
+                    placeholder="enter your message"
+                    id="sender-message"
+                    required
+                  />
+                  <button type="submit" id="feedback-send">SEND</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- DYNAMIC STATUS RESPONSE AND RUNTIME SYSTEM AUDIO UTILITY NOTIFICATION OVERLAYS -->
+            <div class="alert-section">
+              <div class="alert-box hide" id="alert1"><i></i></div>
+            </div>
+            <div class="player-section">
+              <div class="song-name-sh" id="name_box2"></div>
+              <div class="song-timeline-sh">
+                <div class="currenttime-sh" id="current1"><i></i></div>
+                <input id="timeline-sh" type="range" value="0" />
+                <div class="totaltime-sh" id="total1"><i></i></div>
+              </div>
+              <div class="song-control-sh">
+                <div class="bottom-icon-sh repeat-sh" id="repeat2">🔂</div>
+                <div class="bottom-icon-sh back-sh" id="back2">⏪</div>
+                <div class="bottom-icon-sh play-sh" id="play2">▶️</div>
+                <div class="bottom-icon-sh next-sh" id="next">⏩</div>
+                <div class="bottom-icon-sh shuffle-sh" id="shuffle">🔀</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUDIO CONTROL DECK UTILITY MODULE PAGE -->
+          <div class="hide" id="control-page">
+            <div class="song-name-ct" id="name_box"></div>
+            <div class="song-image-ct">
+              <div class="song-album"><img src="t.jpg" /></div>
+            </div>
+            <div class="song-lab-icon">
+              <button id="lab-entry"><i>LAB ENTRY</i></button>
+            </div>
+            <div class="song-timeline-ct">
+              <div class="song-currenttime-ct" id="current"><i></i></div>
+              <input type="range" id="timeline-ct" value="0" />
+              <div class="song-totaltime-ct" id="total"><i></i></div>
+            </div>
+            <div class="control-box-ct">
+              <div class="control-button repeat-ct" id="repeat1">🔂</div>
+              <div class="control-button back-ct" id="back1">⏪</div>
+              <div class="control-button play-ct" id="play1">▶️</div>
+              <div class="control-button next-ct" id="next1">⏩</div>
+              <div class="control-button shuffle-ct" id="shuffle1">🔀</div>
+            </div>
+            <div class="song-alert-ct">
+              <div class="alert-box-ct hide" id="alert"><i></i></div>
+            </div>
+            <div class="song-volume-ct">
+              <select class="sleep-ct" id="sleep">
+                <option value="0">🕕</option>
+                <option value="5"><i>5 mins</i></option>
+                <option value="10"><i>10 mins</i></option>
+                <option value="15"><i>15 mins</i></option>
+                <option value="20"><i>20 mins</i></option>
+                <option value="25"><i>25 mins</i></option>
+                <option value="30"><i>30 mins</i></option>
+                <option value="45"><i>45 mins</i></option>
+                <option value="60"><i> 1 hrs</i></option>
+              </select>
+              <input
+                id="volume-ct"
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value="0.5"
+              />
+              <div class="volume-icon" id="volume-icon">🔉</div>
+            </div>
+            <div class="metadata-ct"></div>
+          </div>
+
+          <!-- MOBILE-ONLY BOTTOM NAVIGATION (replaces the top nav buttons on small screens) -->
+          <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+            <button class="mobile-nav-btn" data-target="home-btn">
+              <i class="fa-solid fa-house"></i><span>Home</span>
+            </button>
+            <button class="mobile-nav-btn" data-target="control-btn">
+              <i class="fa-solid fa-sliders"></i><span>Control</span>
+            </button>
+            <button class="mobile-nav-btn" data-target="lab-btn">
+              <i class="fa-solid fa-flask"></i><span>Lab</span>
+            </button>
+            <button class="mobile-nav-btn" data-target="account-btn">
+              <i class="fa-solid fa-user"></i><span>Account</span>
+            </button>
+            <button class="mobile-nav-btn" data-target="about-btn">
+              <i class="fa-solid fa-circle-info"></i><span>About</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- SYSTEM ADMINISTRATIVE MODULE VIEW -->
+      <div class="hide" id="admin_user">
+        <div class="admin-heading">
+          <i><h1>WELCOME BACK!! ADMIN</h1></i>
+        </div>
+        <nav id="admin-nav">
+          <button class="admin-btn" id="admin-home">admin</button>
+          <button class="admin-btn" id="admin-new">new</button>
+          <button class="admin-btn" id="admin-edit">edit</button>
+          <button class="admin-btn" id="admin-upload">upload</button>
+          <button class="admin-btn" id="admin-back">back</button>
+        </nav>
+        <div class="admin-section">
+          <div class="admin-home" id="home4">
+            <h2><i>WELCOME DEVIL TO THE HOME OF YOUR WEB</i></h2>
+          </div>
+          <div class="hide" id="new4">
+            <div class="msg">
+              <h2><i>CREATE NEW SONG CARDS</i></h2>
+            </div>
+            <input
+              type="text"
+              id="card-name"
+              placeholder="ENTER THE CARD NAME"
+            /><input
+              type="link"
+              placeholder="enter card img link"
+              id="card-img"
+            /><button id="create-card">CREATE</button>
+          </div>
+          <div class="hide" id="edit4">
+            <div class="edit-left">
+              <h2><i>LIST OF CARDS</i></h2>
+            </div>
+            <div class="edit-right">
+              <h2><i>EDIT THE CARDS</i></h2>
+            </div>
+          </div>
+          <div class="hide" id="upload4">
+            <div class="upload-left">
+              <h2><i>SELECT THE CARD FROM THE LIST</i></h2>
+            </div>
+            <div class="upload-right">
+              <h2><i>UPLOAD NEW SONGS</i></h2>
+              <input
+                id="song-name"
+                type="text"
+                placeholder="enter the song name"
+                required
+              />
+              <input
+                type="link"
+                id="song-link"
+                placeholder="enter song link"
+                required
+              />
+              <button id="upload-song">UPLOAD</button>
+            </div>
+          </div>
+        </div>
+        <footer id="admin-footer">
+          <h2><i>MADE WITH LOVE BY DEVIL</i></h2>
+        </footer>
+      </div>
+    </div>
+
+    <!-- CORE LOGIC / JAVASCRIPT BLOCK -->
+    <script>
+      // RUNTIME APPLICATION SETUP OVERRIDE INITIAL LOADING CONFIGURATION
+      let loading_pp = document.getElementById("loading_pp");
+      setTimeout(() => {
+        loading_pp.classList.replace("loading-page", "hide");
+        admin_pp.classList.replace("admin-page", "hide");
+        login_pp.classList.replace("login-page", "hide");
+        home_pp.classList.replace("hide", "home-page");
+      }, 1500);
+
+      // DOM UI COMPONENT AND VIEW ROUTER ELEMENT RESOLUTION REFERENCE BINDINGS
+      let login_page = document.getElementById("login_center");
+      let hyper_btn = document.getElementById("login-switch");
+      let error_h = document.getElementById("login-error-field"); // FIXED: Linked cleanly to form unique target field reference
+      let username_login = document.getElementById("username-login");
+      let password_login = document.getElementById("password-login");
+      let login_submit = document.getElementById("login-submit");
+
+      let user_page = document.getElementById("user_center");
+      let hyper_btn2 = document.getElementById("createnew-switch");
+      let error_h2 = document.getElementById("login-error");
+      let new_username = document.getElementById("username-new");
+      let new_password = document.getElementById("password-new");
+      let new_submit = document.getElementById("createnew-submit");
+
+      // INTERFACE NAVIGATION VIEW STATE CHANGE AND VISUAL STACK LAYER TRANSITIONS
+      if (hyper_btn && hyper_btn2) {
+        hyper_btn.addEventListener("click", () => {
+          login_page.style.zIndex = "0";
+          user_page.style.zIndex = "1";
+        });
+        hyper_btn2.addEventListener("click", () => {
+          login_page.style.zIndex = "1";
+          user_page.style.zIndex = "0";
+        });
+      }
+
+      var login_pp = document.getElementById("login_pp");
+      let home_pp = document.getElementById("user_home");
+      let skipp = document.querySelectorAll(".skip_btn");
+      skipp.forEach((e) => {
+        e.addEventListener("click", () => {
+          login_pp.classList.replace("login-page", "hide");
+          home_pp.classList.replace("hide", "home-page");
+        });
+      });
+
+      let login_hy = document.getElementById("login_btn");
+      login_hy.addEventListener("click", () => {
+        login_pp.classList.replace("hide", "login-page");
+        home_pp.classList.replace("home-page", "hide");
+      });
+
+      // AUTHENTICATION INTERCEPT PROCESSING ENGINE FOR LOCAL ADMINISTRATIVE INTERFACE ELEVATION
+      let check_btn = document.getElementById("login-submit");
+      let error_msg = document.getElementById("login-error-field"); // FIXED: Matches updated form component validation container
+      let admin_pp = document.getElementById("admin_user");
+
+      check_btn.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        let admin_username = document.getElementById("username-login").value;
+        let admin_password = document.getElementById("password-login").value;
+        if (
+          admin_username == "iamadmin" &&
+          admin_password == "givemeaccessiamadmin"
+        ) {
+          admin_pp.classList.replace("hide", "admin-page");
+          login_pp.classList.replace("login-page", "hide");
+          home_pp.classList.replace("home-page", "hide");
+        } else {
+          if (error_msg) error_msg.classList.remove("hide");
+        }
+      });
+
+      let back = document.getElementById("admin-back");
+      back.addEventListener("click", () => {
+        admin_pp.classList.replace("admin-page", "hide");
+        login_pp.classList.replace("login-page", "hide");
+        home_pp.classList.replace("hide", "home-page");
+      });
+
+      // ADMINISTRATIVE VIEW SECTION MANAGEMENT ROUTER ROUTINES
+      let admin_home = document.getElementById("admin-home");
+      let admin_new = document.getElementById("admin-new");
+      let admin_edit = document.getElementById("admin-edit");
+      let admin_upload = document.getElementById("admin-upload");
+
+      let admin_home_page = document.getElementById("home4");
+      let admin_new_page = document.getElementById("new4");
+      let admin_edit_page = document.getElementById("edit4");
+      let admin_upload_page = document.getElementById("upload4");
+
+      if (admin_home) {
+        admin_home.style.border = "1px solid #fff";
+        admin_home.addEventListener("click", () => {
+          admin_home_page.classList.replace("hide", "admin-home");
+          admin_edit_page.classList.replace("admin-edit", "hide");
+          admin_new_page.classList.replace("admin-new", "hide");
+          admin_upload_page.classList.replace("admin-upload", "hide");
+          admin_home.style.border = "1px solid #fff";
+          admin_new.style.border = "none";
+          admin_edit.style.border = "none";
+          admin_upload.style.border = "none";
+        });
+
+        admin_new.addEventListener("click", () => {
+          admin_home_page.classList.replace("admin-home", "hide");
+          admin_edit_page.classList.replace("admin-edit", "hide");
+          admin_new_page.classList.replace("hide", "admin-new");
+          admin_upload_page.classList.replace("admin-upload", "hide");
+          admin_home.style.border = "none";
+          admin_new.style.border = "1px solid #fff";
+          admin_edit.style.border = "none";
+          admin_upload.style.border = "none";
+        });
+
+        admin_edit.addEventListener("click", () => {
+          admin_home_page.classList.replace("admin-home", "hide");
+          admin_edit_page.classList.replace("hide", "admin-edit");
+          admin_new_page.classList.replace("admin-new", "hide");
+          admin_upload_page.classList.replace("admin-upload", "hide");
+          admin_home.style.border = "none";
+          admin_new.style.border = "none";
+          admin_edit.style.border = "1px solid #fff";
+          admin_upload.style.border = "none";
+        });
+
+        admin_upload.addEventListener("click", () => {
+          admin_home_page.classList.replace("admin-home", "hide");
+          admin_edit_page.classList.replace("admin-edit", "hide");
+          admin_new_page.classList.replace("admin-new", "hide");
+          admin_upload_page.classList.replace("hide", "admin-upload");
+          admin_home.style.border = "none";
+          admin_new.style.border = "none";
+          admin_edit.style.border = "none";
+          admin_upload.style.border = "1px solid #fff";
+        });
+      }
+
+      console.log("js file is ready");
+
+      // SINGLE PAGE ROUTING AND DYNAMIC INTERFACE DISPLAY LOGIC
+      let home_page = document.getElementById("home-page");
+      let playlist_sec = document.getElementById("cards-section");
+      let control_page = document.getElementById("control-page");
+      let lab_page = document.getElementById("lab-page");
+      let account_page = document.getElementById("account-section");
+      let about_page = document.getElementById("feedback-section");
+
+      let home_btn = document.getElementById("home-btn");
+      let control_btn = document.getElementById("control-btn");
+      let lab_btn = document.getElementById("lab-btn");
+      let account_btn = document.getElementById("account-btn");
+      let about_btn = document.getElementById("about-btn");
+      let lab_access = document.getElementById("lab-entry");
+
+      if (home_btn) {
+        home_btn.addEventListener("click", () => {
+          home_btn.style.border = "1px solid #fff";
+          control_btn.style.border = "none";
+          lab_btn.style.border = "none";
+          account_btn.style.border = "none";
+          about_btn.style.border = "none";
+          home_page.classList.replace("hide", "home-remain-part");
+          playlist_sec.classList.replace("hide", "cards-section");
+          lab_page.classList.replace("lab-section", "hide");
+          control_page.classList.replace("control-page-part", "hide");
+          account_page.classList.replace("account-section", "hide");
+          about_page.classList.replace("feedback-section", "hide");
+        });
+        control_btn.addEventListener("click", () => {
+          home_btn.style.border = "none";
+          control_btn.style.border = "1px solid #fff";
+          lab_btn.style.border = "none";
+          account_btn.style.border = "none";
+          about_btn.style.border = "none";
+          home_page.classList.replace("home-remain-part", "hide");
+          playlist_sec.classList.replace("cards-section", "hide");
+          lab_page.classList.replace("lab-section", "hide");
+          control_page.classList.replace("hide", "control-page-part");
+          account_page.classList.replace("account-section", "hide");
+          about_page.classList.replace("feedback-section", "hide");
+        });
+        lab_btn.addEventListener("click", () => {
+          home_btn.style.border = "none";
+          control_btn.style.border = "none";
+          lab_btn.style.border = "1px solid #fff";
+          account_btn.style.border = "none";
+          about_btn.style.border = "none";
+          home_page.classList.replace("hide", "home-remain-part");
+          playlist_sec.classList.replace("cards-section", "hide");
+          lab_page.classList.replace("hide", "lab-section");
+          control_page.classList.replace("control-page-part", "hide");
+          account_page.classList.replace("account-section", "hide");
+          about_page.classList.replace("feedback-section", "hide");
+        });
+        lab_access.addEventListener("click", () => {
+          home_btn.style.border = "none";
+          control_btn.style.border = "none";
+          lab_btn.style.border = "1px solid #fff";
+          account_btn.style.border = "none";
+          about_btn.style.border = "none";
+          home_page.classList.replace("hide", "home-remain-part");
+          playlist_sec.classList.replace("cards-section", "hide");
+          lab_page.classList.replace("hide", "lab-section");
+          control_page.classList.replace("control-page-part", "hide");
+          account_page.classList.replace("account-section", "hide");
+          about_page.classList.replace("feedback-section", "hide");
+        });
+        account_btn.addEventListener("click", () => {
+          home_btn.style.border = "none";
+          control_btn.style.border = "none";
+          lab_btn.style.border = "none";
+          account_btn.style.border = "1px solid #fff";
+          about_btn.style.border = "none";
+          home_page.classList.replace("hide", "home-remain-part");
+          playlist_sec.classList.replace("cards-section", "hide");
+          lab_page.classList.replace("lab-section", "hide");
+          control_page.classList.replace("control-page-part", "hide");
+          account_page.classList.replace("hide", "account-section");
+          about_page.classList.replace("feedback-section", "hide");
+        });
+        about_btn.addEventListener("click", () => {
+          home_btn.style.border = "none";
+          control_btn.style.border = "none";
+          lab_btn.style.border = "none";
+          account_btn.style.border = "none";
+          about_btn.style.border = "1px solid #fff";
+          home_page.classList.replace("hide", "home-remain-part");
+          playlist_sec.classList.replace("cards-section", "hide");
+          lab_page.classList.replace("lab-section", "hide");
+          control_page.classList.replace("control-page-part", "hide");
+          account_page.classList.replace("account-section", "hide");
+          // FIXED: Correctly matching the class replacement value to 'feedback-section'
+          about_page.classList.replace("hide", "feedback-section");
+        });
+      }
+
+      // MEDIA ELEMENT CORE PLAYBACK CONTROL DECLARATIONS
+      let song = document.getElementById("music");
+      let repeat1 = document.getElementById("repeat1");
+      let back1 = document.getElementById("back1");
+      let play1 = document.getElementById("play1");
+      let next1 = document.getElementById("next1");
+      let shuffle1 = document.getElementById("shuffle1");
+
+      let repeat2 = document.getElementById("repeat2");
+      let back2 = document.getElementById("back2");
+      let play2 = document.getElementById("play2");
+
+      let bottom_next_btn = document.getElementById("next");
+      let bottom_shuffle_btn = document.getElementById("shuffle");
+      let control_next_btn = document.getElementById("next1");
+      let bottom_back_btn = document.getElementById("back2");
+      let control_back_btn = document.getElementById("back1");
+      let control_shuffle_btn = document.getElementById("shuffle1");
+
+      let playing = false;
+
+      // CORE SYSTEM EVENT REGISTRATION UTILITY BINDINGS FOR DEVICE CORE DECK EMITTED TRIGGERS
+      if (play1 && play2) {
+        play1.addEventListener("click", () => {
+          if (playing == false) {
+            song.play();
+            playing = true;
+            play1.innerHTML = "⏸️";
+            play2.innerHTML = "⏸️";
+            alert_fn("song is playing");
+          } else {
+            song.pause();
+            playing = false;
+            play2.innerHTML = "▶️";
+            play1.innerHTML = "▶️";
+            alert_fn("song is paused");
+          }
+        });
+        play2.addEventListener("click", () => {
+          if (playing == false) {
+            song.play();
+            playing = true;
+            play1.innerHTML = "⏸️";
+            play2.innerHTML = "⏸️";
+            alert_fn("song is playing");
+          } else {
+            song.pause();
+            playing = false;
+            play2.innerHTML = "▶️";
+            play1.innerHTML = "▶️";
+            alert_fn("song is paused");
+          }
+        });
+      }
+
+      let timeline1 = document.getElementById("timeline-ct");
+      let timeline2 = document.getElementById("timeline-sh");
+      let current = document.getElementById("current");
+      let total = document.getElementById("total");
+      let current1 = document.getElementById("current1");
+      let total1 = document.getElementById("total1");
+
+      // FIXED: Refactored logic to accurately display human-readable playback progress formats
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return "00:00";
+        let mins = Math.floor(seconds / 60);
+        let secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      }
+
+      if (timeline1 && timeline2) {
+        song.addEventListener("timeupdate", () => {
+          if (!isNaN(song.duration) && song.duration > 0) {
+            let duration = (song.currentTime / song.duration) * 100;
+            timeline1.value = duration;
+            timeline2.value = duration;
+          }
+
+          // Render calculations cleanly inside target DOM strings
+          if (current) current.innerHTML = formatTime(song.currentTime);
+          if (total) total.innerHTML = formatTime(song.duration);
+          if (current1) current1.innerHTML = formatTime(song.currentTime);
+          if (total1) total1.innerHTML = formatTime(song.duration);
+        });
+
+        timeline1.addEventListener("input", function () {
+          if (!isNaN(song.duration))
+            song.currentTime = (timeline1.value * song.duration) / 100;
+        });
+        timeline2.addEventListener("input", function () {
+          if (!isNaN(song.duration))
+            song.currentTime = (timeline2.value * song.duration) / 100;
+        });
+      }
+
+      let repeat = false;
+      if (repeat1 && repeat2) {
+        repeat1.addEventListener("click", () => {
+          repeat = !repeat;
+          song.loop = repeat;
+          alert_fn(repeat ? "loop is on" : "loop is off");
+        });
+        repeat2.addEventListener("click", () => {
+          repeat = !repeat;
+          song.loop = repeat;
+          alert_fn(repeat ? "loop is on" : "loop is off");
+        });
+      }
+
+      let volume_btn = document.getElementById("volume-ct");
+      let volume_emoji = document.getElementById("volume-icon");
+      if (volume_btn && volume_emoji) {
+        volume_btn.addEventListener("input", () => {
+          song.volume = volume_btn.value;
+          if (volume_btn.value > "0.1" && volume_btn.value <= "0.4") {
+            volume_emoji.innerHTML = "🔈";
+          } else if (volume_btn.value > "0.4" && volume_btn.value <= "0.7") {
+            volume_emoji.innerHTML = "🔉";
+          } else if (volume_btn.value == "0") {
+            volume_emoji.innerHTML = "🔇";
+          } else if (volume_btn.value > "0.7" && volume_btn.value <= "1") {
+            volume_emoji.innerHTML = "🔊";
+          }
+        });
+
+        let mute = false;
+        volume_emoji.addEventListener("click", () => {
+          if (mute === false) {
+            volume_emoji.innerHTML = "🔇";
+            song.volume = 0;
+            volume_btn.value = 0;
+            mute = true;
+            alert_fn("song is muted");
+          } else {
+            volume_emoji.innerHTML = "🔉";
+            song.volume = 0.5;
+            volume_btn.value = 0.5;
+            mute = false;
+            alert_fn("song is unmuted");
+          }
+        });
+      }
+
+      var sleep_input = document.getElementById("sleep");
+      if (sleep_input) {
+        let sleepTimeout; // Fixed global scope persistence wrapper context instance tracking variable
+        function sleep(time) {
+          if (sleepTimeout) clearTimeout(sleepTimeout);
+          sleepTimeout = setTimeout(() => {
+            song.pause();
+            playing = false;
+            if (play2) play2.innerHTML = "▶️";
+            if (play1) play1.innerHTML = "▶️";
+            alert_fn("song is stopped");
+          }, time);
+        }
+        sleep_input.addEventListener("change", function (event) {
+          let sleep_value = parseInt(document.getElementById("sleep").value);
+          if (sleep_value > 0) {
+            let time = sleep_value * 1000 * 60;
+            alert_fn(`song will stop after ${sleep_value}min`);
+            sleep(time);
+          } else {
+            if (sleepTimeout) clearTimeout(sleepTimeout);
+            alert_fn("Sleep timer cleared");
+          }
+        });
+      }
+
+      let alertBox = document.getElementById("alert");
+      let alert1 = document.getElementById("alert1");
+
+      // Initial style setup execution
+      if (alert1) alert1.classList.add("hide");
+      if (alertBox) alertBox.classList.add("hide");
+
+      // FIXED: Resolved dynamic mismatch assignment swapping alert style container classes
+      function alert_fn(msg) {
+        if (alertBox) {
+          alertBox.classList.remove("hide");
+          alertBox.innerHTML = `<i>${msg}</i>`;
+        }
+        if (alert1) {
+          alert1.classList.remove("hide");
+          alert1.innerHTML = `<i>${msg}</i>`;
+        }
+
+        // Auto cleanup hook routine
+        setTimeout(() => {
+          alert_hide();
+        }, 2200);
+      }
+
+      function alert_hide() {
+        if (alertBox) alertBox.classList.add("hide");
+        if (alert1) alert1.classList.add("hide");
+      }
+
+      // =========================================================================
+      // STATIC CLIENT DIRECTORY DATA STORAGE ENGINE & SCHEMA DEF DEFINITIONS
+      // =========================================================================
+      const defaultData = [
+        {
+          id: 1,
+          name: "English hits",
+          img: "t.jpg",
+          songs: [
+            {
+              name: "English Hit 1",
+              src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            },
+            {
+              name: "English Hit 2",
+              src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "Hindi hits",
+          img: "t2.jpg",
+          songs: [{ name: "Hindi Song 1", src: "hindi.mp3" }],
+        },
+        {
+          id: 3,
+          name: "90s hits",
+          img: "t.jpg",
+          songs: [{ name: "90s Hit 1", src: "90s.mp3" }],
+        },
+        {
+          id: 4,
+          name: "Phonks",
+          img: "t2.jpg",
+          songs: [{ name: "Phonk 1", src: "phonk.mp3" }],
+        },
+        {
+          id: 5,
+          name: "Liked songs",
+          img: "t.jpg",
+          songs: [{ name: "Liked Song 1", src: "liked.mp3" }],
+        },
+        {
+          id: 6,
+          name: "Local hits",
+          img: "t.jpg",
+          songs: [{ name: "Local Hit 1", src: "local.mp3" }],
+        },
+      ];
+
+      let appData =
+        JSON.parse(localStorage.getItem("audioLabData")) || defaultData;
+      let currentPlaylistData = [];
+      let currentSongIndex = 0;
+      let song_container = document.getElementById("song-container");
+
+      function saveData() {
+        localStorage.setItem("audioLabData", JSON.stringify(appData));
+        renderHomeCards();
+        renderAdminEditList();
+        renderAdminUploadList();
+      }
+
+      function renderHomeCards() {
+        let cardsSection = document.getElementById("cards-section");
+        if (!cardsSection) return;
+        cardsSection.innerHTML = "";
+
+        appData.forEach((playlist) => {
+          let card = document.createElement("div");
+          card.className = "playlist-card";
+          card.innerHTML = `
+                  <div class="playlist-image"><img src="${playlist.img}" onerror="this.src='t.jpg'" /></div>
+                  <div class="playlist-info"><h3><i>${playlist.name}</i></h3></div>
+              `;
+          card.addEventListener("click", () => {
+            loadPlaylist(playlist.songs);
+            let displayHeader = document.querySelector(".current-playlist");
+            if (displayHeader) displayHeader.innerText = playlist.name;
+          });
+          cardsSection.appendChild(card);
+        });
+
+        cardsSection.insertAdjacentHTML(
+          "beforeend",
+          `
+            <div class="upload-file">
+              <label for="file-input" id="file" style="cursor: pointer;"><i>Upload local files</i></label>
+              <input id="file-input" type="file" accept=".mp3 , audio/mpeg" multiple style="display:none;" />
+            </div>
+          `,
+        );
+
+        let newFileInput = document.getElementById("file-input");
+        if (newFileInput) {
+          newFileInput.addEventListener("change", function (event) {
+            let files = [...event.target.files];
+            if (files.length === 0) return;
+            let localPlaylist = files.map((file) => ({
+              name: file.name.replace(/\.[^/.]+$/, ""),
+              src: URL.createObjectURL(file),
+              fileObj: file,
+            }));
+            loadPlaylist(localPlaylist);
+            let displayHeader = document.querySelector(".current-playlist");
+            if (displayHeader) displayHeader.innerText = "Local Uploads";
+          });
+        }
+      }
+
+      // ADMINISTRATIVE CONTROLLER HANDLERS FOR STORAGE MODIFICATIONS
+      let createCardBtn = document.getElementById("create-card");
+      if (createCardBtn) {
+        createCardBtn.addEventListener("click", () => {
+          let nameInput = document.getElementById("card-name").value;
+          let imgInput = document.getElementById("card-img").value;
+
+          if (nameInput.trim() === "")
+            return alert("Please enter a card name!");
+
+          appData.push({
+            id: Date.now(),
+            name: nameInput,
+            img: imgInput || "t.jpg",
+            songs: [],
+          });
+
+          document.getElementById("card-name").value = "";
+          document.getElementById("card-img").value = "";
+          alert("New Card Created Successfully!");
+          saveData();
+        });
+      }
+
+      let currentlyEditingId = null;
+      function renderAdminEditList() {
+        let editLeft = document.querySelector(".edit-left");
+        if (!editLeft) return;
+        editLeft.innerHTML = "<h2><i>LIST OF CARDS</i></h2>";
+
+        appData.forEach((playlist) => {
+          let btn = document.createElement("button");
+          btn.style.cssText =
+            "padding: 10px; border-radius: 10px; background: purple; border: 1px solid white; cursor: pointer; width: 90%; font-size: 1.1rem; flex-shrink: 0; margin-bottom: 5px;";
+          btn.innerText = playlist.name;
+
+          btn.addEventListener("click", () => {
+            currentlyEditingId = playlist.id;
+
+            document.querySelector(".edit-right").innerHTML = `
+                      <h2><i>EDIT: ${playlist.name}</i></h2>
+                      <input type="text" id="edit-name" value="${playlist.name}" style="height: 45px; width: 80%; border-radius: 15px; text-align:center; color: #000; padding: 5px; font-weight: bold;" placeholder="Card Name">
+                      <input type="text" id="edit-img" value="${playlist.img}" style="height: 45px; width: 80%; border-radius: 15px; text-align:center; color: #000; padding: 5px;" placeholder="Image Link">
+                      <button id="save-edit" style="height: 50px; width: 50%; border-radius: 30px; background-color: blue; border: 1px solid #fff; cursor: pointer;">SAVE CHANGES</button>
+                      <button id="delete-edit" style="height: 50px; width: 50%; border-radius: 30px; background-color: red; border: 1px solid #fff; cursor: pointer;">DELETE CARD</button>
+                  `;
+
+            document
+              .getElementById("save-edit")
+              .addEventListener("click", () => {
+                let newName = document.getElementById("edit-name").value;
+                let newImg = document.getElementById("edit-img").value;
+                let target = appData.find((p) => p.id === currentlyEditingId);
+                if (target) {
+                  target.name = newName;
+                  target.img = newImg;
+                  alert("Changes Saved!");
+                  saveData();
+                }
+              });
+
+            document
+              .getElementById("delete-edit")
+              .addEventListener("click", () => {
+                appData = appData.filter((p) => p.id !== currentlyEditingId);
+                document.querySelector(".edit-right").innerHTML =
+                  "<h2><i>EDIT THE CARDS</i></h2>";
+                alert("Card Deleted!");
+                saveData();
+              });
+          });
+          editLeft.appendChild(btn);
+        });
+      }
+
+      let currentUploadCardId = null;
+      function renderAdminUploadList() {
+        let uploadLeft = document.querySelector(".upload-left");
+        if (!uploadLeft) return;
+        uploadLeft.innerHTML = "<h2><i>SELECT CARD</i></h2>";
+
+        appData.forEach((playlist) => {
+          let btn = document.createElement("button");
+          btn.style.cssText =
+            "padding: 10px; border-radius: 10px; background: purple; border: 1px solid white; cursor: pointer; width: 90%; font-size: 1.1rem; flex-shrink: 0; margin-bottom: 5px;";
+          btn.innerText = playlist.name;
+
+          btn.addEventListener("click", () => {
+            currentUploadCardId = playlist.id;
+            let allBtns = uploadLeft.querySelectorAll("button");
+            allBtns.forEach((b) => (b.style.background = "purple"));
+            btn.style.background = "green";
+            document.querySelector(".upload-right h2").innerHTML =
+              `<i>ADD TO: ${playlist.name}</i>`;
+          });
+          uploadLeft.appendChild(btn);
+        });
+      }
+
+      let uploadSongBtn = document.getElementById("upload-song");
+      if (uploadSongBtn) {
+        uploadSongBtn.addEventListener("click", () => {
+          if (!currentUploadCardId)
+            return alert("Please select a card from the left panel first!");
+
+          let sName = document.getElementById("song-name").value;
+          let sLink = document.getElementById("song-link").value;
+
+          if (sName.trim() === "" || sLink.trim() === "")
+            return alert("Please enter both the song name and link.");
+
+          let target = appData.find((p) => p.id === currentUploadCardId);
+          if (target) {
+            target.songs.push({ name: sName, src: sLink });
+            alert(
+              '"' +
+                sName +
+                '" has been successfully added to ' +
+                target.name +
+                "!",
+            );
+            document.getElementById("song-name").value = "";
+            document.getElementById("song-link").value = "";
+            saveData();
+          }
+        });
+      }
+
+      function loadPlaylist(playlistArray) {
+        currentPlaylistData = playlistArray;
+        if (song_container) song_container.innerHTML = "";
+
+        if (currentPlaylistData.length === 0) {
+          song_container.innerHTML =
+            "<p style='padding:10px;'>No songs inside this playlist yet.</p>";
+          return;
+        }
+
+        currentPlaylistData.forEach((songObj, index) => {
+          let card = document.createElement("div");
+          card.className = "library-song song-card";
+          card.innerHTML = `<div style="padding-left: 10px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i>${songObj.name}</i></div>`;
+          card.style.cursor = "pointer";
+          card.style.marginBottom = "2px";
+
+          card.addEventListener("click", () => {
+            playSpecificSong(index);
+          });
+          song_container.appendChild(card);
+        });
+
+        // Auto-play the first entry upon loading a new tracklist array
+        playSpecificSong(0);
+      }
+
+      function playNextSong() {
+        if (currentPlaylistData.length === 0) return;
+
+        if (isShuffle && currentPlaylistData.length > 1) {
+          let randomIndex = currentSongIndex;
+          while (randomIndex === currentSongIndex) {
+            randomIndex = Math.floor(
+              Math.random() * currentPlaylistData.length,
+            );
+          }
+          currentSongIndex = randomIndex;
+        } else {
+          currentSongIndex =
+            (currentSongIndex + 1) % currentPlaylistData.length;
+        }
+        playSpecificSong(currentSongIndex);
+      }
+
+      function playPrevSong() {
+        if (currentPlaylistData.length === 0) return;
+        currentSongIndex =
+          (currentSongIndex - 1 + currentPlaylistData.length) %
+          currentPlaylistData.length;
+        playSpecificSong(currentSongIndex);
+      }
+
+      if (control_next_btn)
+        control_next_btn.addEventListener("click", playNextSong);
+      if (bottom_next_btn)
+        bottom_next_btn.addEventListener("click", playNextSong);
+      if (control_back_btn)
+        control_back_btn.addEventListener("click", playPrevSong);
+      if (bottom_back_btn)
+        bottom_back_btn.addEventListener("click", playPrevSong);
+
+      song.addEventListener("ended", () => {
+        if (repeat === false) {
+          playNextSong();
+        }
+      });
+
+      let isShuffle = false;
+      function toggleShuffle() {
+        isShuffle = !isShuffle;
+        let color = isShuffle ? "#00ffff" : "#fff";
+        if (control_shuffle_btn) control_shuffle_btn.style.color = color;
+        if (bottom_shuffle_btn) bottom_shuffle_btn.style.color = color;
+        alert_fn(isShuffle ? "Shuffle is ON" : "Shuffle is OFF");
+      }
+
+      if (control_shuffle_btn)
+        control_shuffle_btn.addEventListener("click", toggleShuffle);
+      if (bottom_shuffle_btn)
+        bottom_shuffle_btn.addEventListener("click", toggleShuffle);
+
+      // =========================================================================
+      // AUDIO LAB REALTIME WEB AUDIO PARAMETER PROCESSING EXTENSION MODULE
+      // =========================================================================
+      let list1Btns = document.querySelectorAll(".list-1 .lab-button");
+      let btnNormal = list1Btns[0];
+      let btnInst = list1Btns[1];
+      let btnVocal = list1Btns[2];
+      let btnNoise = list1Btns[3];
+
+      let list2Selects = document.querySelectorAll(".list-2 .select-lab");
+      let selectBass = list2Selects[0];
+      let selectReverb = list2Selects[1];
+
+      let list2Btns = document.querySelectorAll(".list-2 .lab-button");
+      let btnSlowed = list2Btns[0];
+      let btnNightcore = list2Btns[1];
+
+      let list3Btns = document.querySelectorAll(".list-3 .lab-button");
+      let btnAutoPan = list3Btns[0];
+      let btn3D = list3Btns[1];
+      let btn8D = list3Btns[2];
+
+      let fx_audioCtx, fx_source;
+      let fx_gainNormal, fx_gainInst, fx_gainVocal, fx_summingNode;
+      let fx_rumbleFilter, fx_hissFilter, fx_bassFilter, fx_masterVolume;
+      let fx_reverbDry,
+        fx_reverbWet,
+        fx_convolver,
+        fx_buffers = {};
+      let fx_autoPanNode, fx_lfoPan, fx_lfoPanGain;
+      let fx_widthSplitter,
+        fx_widthMerger,
+        fx_widthDelay,
+        fx_widthDryGain,
+        fx_widthWetGain;
+      let fx_panner8D, fx_masterCompressor;
+      let fx_pannerAnimationId;
+      let fx_isSetup = false;
+
+      song.crossOrigin = "anonymous";
+
+      function fxFade(node, targetValue) {
+        if (!fx_audioCtx) return;
+        node.gain.setTargetAtTime(targetValue, fx_audioCtx.currentTime, 0.05);
+      }
+
+      function setFxBtnActive(btn, isActive) {
+        if (!btn) return;
+        if (isActive) {
+          btn.style.border = "2px solid #00ffff";
+          btn.style.color = "#00ffff";
+          btn.style.boxShadow = "0px 0px 10px rgba(0, 255, 255, 0.4)";
+        } else {
+          btn.style.border = "1px solid #fff";
+          btn.style.color = "#fff";
+          btn.style.boxShadow = "none";
+        }
+      }
+
+      function createReverbBuffer(context, duration, decay) {
+        const length = context.sampleRate * duration;
+        const impulse = context.createBuffer(2, length, context.sampleRate);
+        for (let i = 0; i < length; i++) {
+          const multiplier = Math.pow(1 - i / length, decay);
+          impulse.getChannelData(0)[i] = (Math.random() * 2 - 1) * multiplier;
+          impulse.getChannelData(1)[i] = (Math.random() * 2 - 1) * multiplier;
+        }
+        return impulse;
+      }
+
+      function initAudioFX() {
+        if (fx_isSetup) return;
+        fx_isSetup = true;
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        fx_audioCtx = new AudioContext();
+        fx_source = fx_audioCtx.createMediaElementSource(song);
+        fx_summingNode = fx_audioCtx.createGain();
+
+        fx_gainNormal = fx_audioCtx.createGain();
+        fx_source.connect(fx_gainNormal).connect(fx_summingNode);
+
+        fx_gainInst = fx_audioCtx.createGain();
+        fx_gainInst.gain.value = 0;
+        const splitter = fx_audioCtx.createChannelSplitter(2);
+        const mixer = fx_audioCtx.createGain();
+        const inverter = fx_audioCtx.createGain();
+        inverter.gain.value = -1;
+        fx_source.connect(splitter);
+        splitter.connect(mixer, 0);
+        splitter.connect(inverter, 1);
+        inverter.connect(mixer);
+        mixer.connect(fx_gainInst).connect(fx_summingNode);
+
+        fx_gainVocal = fx_audioCtx.createGain();
+        fx_gainVocal.gain.value = 0;
+        const bandpass = fx_audioCtx.createBiquadFilter();
+        bandpass.type = "bandpass";
+        bandpass.frequency.value = 1500;
+        bandpass.Q.value = 1.2;
+        fx_source
+          .connect(bandpass)
+          .connect(fx_gainVocal)
+          .connect(fx_summingNode);
+
+        fx_rumbleFilter = fx_audioCtx.createBiquadFilter();
+        fx_rumbleFilter.type = "highpass";
+        fx_rumbleFilter.frequency.value = 0;
+        fx_hissFilter = fx_audioCtx.createBiquadFilter();
+        fx_hissFilter.type = "lowpass";
+        fx_hissFilter.frequency.value = 24000;
+        fx_summingNode.connect(fx_rumbleFilter).connect(fx_hissFilter);
+
+        fx_bassFilter = fx_audioCtx.createBiquadFilter();
+        fx_bassFilter.type = "lowshelf";
+        fx_bassFilter.frequency.value = 120;
+        fx_bassFilter.gain.value = 0;
+        fx_hissFilter.connect(fx_bassFilter);
+
+        fx_reverbDry = fx_audioCtx.createGain();
+        fx_reverbWet = fx_audioCtx.createGain();
+        fx_reverbWet.gain.value = 0;
+        fx_convolver = fx_audioCtx.createConvolver();
+
+        fx_buffers.small = createReverbBuffer(fx_audioCtx, 0.5, 3.0);
+        fx_buffers.large = createReverbBuffer(fx_audioCtx, 1.5, 2.0);
+        fx_buffers.hall = createReverbBuffer(fx_audioCtx, 3.0, 1.5);
+        fx_convolver.buffer = fx_buffers.hall;
+
+        fx_bassFilter.connect(fx_reverbDry);
+        fx_bassFilter.connect(fx_convolver).connect(fx_reverbWet);
+
+        const postReverbSum = fx_audioCtx.createGain();
+        fx_reverbDry.connect(postReverbSum);
+        fx_reverbWet.connect(postReverbSum);
+
+        fx_autoPanNode = fx_audioCtx.createStereoPanner();
+        fx_lfoPan = fx_audioCtx.createOscillator();
+        fx_lfoPan.frequency.value = 0.3;
+        fx_lfoPanGain = fx_audioCtx.createGain();
+        fx_lfoPanGain.gain.value = 0;
+        fx_lfoPan.connect(fx_lfoPanGain).connect(fx_autoPanNode.pan);
+        fx_lfoPan.start();
+        postReverbSum.connect(fx_autoPanNode);
+
+        fx_widthDryGain = fx_audioCtx.createGain();
+        fx_widthWetGain = fx_audioCtx.createGain();
+        fx_widthWetGain.gain.value = 0;
+        fx_widthSplitter = fx_audioCtx.createChannelSplitter(2);
+        fx_widthMerger = fx_audioCtx.createChannelMerger(2);
+        fx_widthDelay = fx_audioCtx.createDelay();
+        fx_widthDelay.delayTime.value = 0.015;
+
+        fx_autoPanNode.connect(fx_widthDryGain);
+        fx_autoPanNode.connect(fx_widthWetGain).connect(fx_widthSplitter);
+        fx_widthSplitter.connect(fx_widthMerger, 0, 0);
+        fx_widthSplitter
+          .connect(fx_widthDelay, 1)
+          .connect(fx_widthMerger, 0, 1);
+
+        const post3DSum = fx_audioCtx.createGain();
+        fx_widthDryGain.connect(post3DSum);
+        fx_widthMerger.connect(post3DSum);
+
+        fx_panner8D = fx_audioCtx.createPanner();
+        fx_panner8D.panningModel = "HRTF";
+        fx_panner8D.distanceModel = "inverse";
+        fx_panner8D.refDistance = 5;
+        post3DSum.connect(fx_panner8D);
+
+        fx_masterCompressor = fx_audioCtx.createDynamicsCompressor();
+        fx_masterCompressor.threshold.value = -3;
+        fx_masterCompressor.knee.value = 10;
+        fx_masterCompressor.ratio.value = 12;
+        fx_masterCompressor.attack.value = 0.003;
+        fx_masterCompressor.release.value = 0.25;
+
+        fx_panner8D
+          .connect(fx_masterCompressor)
+          .connect(fx_audioCtx.destination);
+        setFxBtnActive(btnNormal, true);
+      }
+
+      song.addEventListener("play", () => {
+        initAudioFX();
+        if (fx_audioCtx && fx_audioCtx.state === "suspended")
+          fx_audioCtx.resume();
+      });
+
+      let currentStemMode = "normal";
+      function switchStem(mode) {
+        if (!fx_audioCtx) return;
+        currentStemMode = mode;
+        fxFade(fx_gainNormal, 0);
+        fxFade(fx_gainInst, 0);
+        fxFade(fx_gainVocal, 0);
+        setFxBtnActive(btnNormal, false);
+        setFxBtnActive(btnInst, false);
+        setFxBtnActive(btnVocal, false);
+
+        if (mode === "normal") {
+          fxFade(fx_gainNormal, 1);
+          setFxBtnActive(btnNormal, true);
+        }
+        if (mode === "instrumental") {
+          fxFade(fx_gainInst, 1);
+          setFxBtnActive(btnInst, true);
+        }
+        if (mode === "vocal") {
+          fxFade(fx_gainVocal, 1.5);
+          setFxBtnActive(btnVocal, true);
+        }
+      }
+
+      if (btnNormal)
+        btnNormal.addEventListener("click", () => switchStem("normal"));
+      if (btnInst)
+        btnInst.addEventListener("click", () => switchStem("instrumental"));
+      if (btnVocal)
+        btnVocal.addEventListener("click", () => switchStem("vocal"));
+
+      let isNoiseRed = false;
+      if (btnNoise) {
+        btnNoise.addEventListener("click", () => {
+          if (!fx_audioCtx) return;
+          isNoiseRed = !isNoiseRed;
+          setFxBtnActive(btnNoise, isNoiseRed);
+          fx_rumbleFilter.frequency.setTargetAtTime(
+            isNoiseRed ? 90 : 0,
+            fx_audioCtx.currentTime,
+            0.1,
+          );
+          fx_hissFilter.frequency.setTargetAtTime(
+            isNoiseRed ? 10000 : 24000,
+            fx_audioCtx.currentTime,
+            0.1,
+          );
+        });
+      }
+
+      if (selectBass) {
+        selectBass.addEventListener("change", function () {
+          if (fx_audioCtx)
+            fx_bassFilter.gain.setTargetAtTime(
+              parseFloat(this.value),
+              fx_audioCtx.currentTime,
+              0.1,
+            );
+        });
+      }
+
+      if (selectReverb) {
+        selectReverb.addEventListener("change", function () {
+          if (!fx_audioCtx) return;
+          if (this.value === "off" || this.value === "0") {
+            fxFade(fx_reverbWet, 0);
+            fxFade(fx_reverbDry, 1);
+          } else {
+            fx_convolver.buffer = fx_buffers[this.value] || fx_buffers.hall;
+            fxFade(fx_reverbWet, 0.5);
+            fxFade(fx_reverbDry, 0.8);
+          }
+        });
+      }
+
+      let isSlowed = false;
+      let isNightcore = false;
+      function updateSpeed() {
+        if (isSlowed) {
+          song.playbackRate = 0.82;
+          song.preservesPitch = false;
+        } else if (isNightcore) {
+          song.playbackRate = 1.25;
+          song.preservesPitch = false;
+        } else {
+          song.playbackRate = 1.0;
+          song.preservesPitch = true;
+        }
+      }
+
+      if (btnSlowed) {
+        btnSlowed.addEventListener("click", () => {
+          isSlowed = !isSlowed;
+          isNightcore = false;
+          setFxBtnActive(btnSlowed, isSlowed);
+          setFxBtnActive(btnNightcore, false);
+          updateSpeed();
+        });
+      }
+      if (btnNightcore) {
+        btnNightcore.addEventListener("click", () => {
+          isNightcore = !isNightcore;
+          isSlowed = false;
+          setFxBtnActive(btnNightcore, isNightcore);
+          setFxBtnActive(btnSlowed, false);
+          updateSpeed();
+        });
+      }
+
+      let isAutoPan = false;
+      if (btnAutoPan) {
+        btnAutoPan.addEventListener("click", () => {
+          if (!fx_audioCtx) return;
+          isAutoPan = !isAutoPan;
+          setFxBtnActive(btnAutoPan, isAutoPan);
+          fxFade(fx_lfoPanGain, isAutoPan ? 1 : 0);
+        });
+      }
+
+      let is3D = false;
+      if (btn3D) {
+        btn3D.addEventListener("click", () => {
+          if (!fx_audioCtx) return;
+          is3D = !is3D;
+          setFxBtnActive(btn3D, is3D);
+          fxFade(fx_widthDryGain, is3D ? 0 : 1);
+          fxFade(fx_widthWetGain, is3D ? 1 : 0);
+        });
+      }
+
+      let is8D = false;
+      if (btn8D) {
+        btn8D.addEventListener("click", () => {
+          if (!fx_audioCtx) return;
+          is8D = !is8D;
+          setFxBtnActive(btn8D, is8D);
+          if (is8D) {
+            let angle = 0;
+            function rotate() {
+              if (!is8D) return;
+              angle += 0.015;
+              fx_panner8D.positionX.setTargetAtTime(
+                Math.sin(angle) * 1.5,
+                fx_audioCtx.currentTime,
+                0.05,
+              );
+              fx_panner8D.positionZ.setTargetAtTime(
+                Math.cos(angle) * 1.5,
+                fx_audioCtx.currentTime,
+                0.05,
+              );
+              fx_pannerAnimationId = requestAnimationFrame(rotate);
+            }
+            rotate();
+          } else {
+            cancelAnimationFrame(fx_pannerAnimationId);
+            fx_panner8D.positionX.setTargetAtTime(
+              0,
+              fx_audioCtx.currentTime,
+              0.1,
+            );
+            fx_panner8D.positionZ.setTargetAtTime(
+              0,
+              fx_audioCtx.currentTime,
+              0.1,
+            );
+          }
+        });
+      }
+
+      // =========================================================================
+      // FIX: RE-APPLY ALL ACTIVE LAB EFFECTS AFTER A NEW SONG LOADS
+      // -------------------------------------------------------------------------
+      // Some browsers silently reset a media element's playbackRate / preservesPitch
+      // whenever its src changes (a long-standing Chromium quirk), and the visual
+      // "active" state of the lab buttons was never being re-synced to the new
+      // <audio> element / Web Audio graph. That's why effects had to be manually
+      // re-clicked after every song. This function re-pushes the CURRENT effect
+      // state onto the media element and the Web Audio graph, and is called every
+      // time a new track's metadata loads (see the "loadedmetadata" listener below).
+      // =========================================================================
+      function reapplyFxState() {
+        // Playback speed / pitch (native <audio> properties, reset by some browsers on src change)
+        updateSpeed();
+
+        if (!fx_audioCtx) return; // Rest only applies once the Web Audio graph exists
+
+        // Stem isolation (normal / instrumental / vocal)
+        switchStem(currentStemMode);
+
+        // Noise reduction
+        fx_rumbleFilter.frequency.setTargetAtTime(
+          isNoiseRed ? 90 : 0,
+          fx_audioCtx.currentTime,
+          0.01,
+        );
+        fx_hissFilter.frequency.setTargetAtTime(
+          isNoiseRed ? 10000 : 24000,
+          fx_audioCtx.currentTime,
+          0.01,
+        );
+        setFxBtnActive(btnNoise, isNoiseRed);
+
+        // Bass boost
+        if (selectBass) {
+          fx_bassFilter.gain.setTargetAtTime(
+            parseFloat(selectBass.value) || 0,
+            fx_audioCtx.currentTime,
+            0.01,
+          );
+        }
+
+        // Reverb
+        if (selectReverb) {
+          if (selectReverb.value === "off" || selectReverb.value === "0") {
+            fx_reverbWet.gain.setTargetAtTime(0, fx_audioCtx.currentTime, 0.01);
+            fx_reverbDry.gain.setTargetAtTime(1, fx_audioCtx.currentTime, 0.01);
+          } else {
+            fx_convolver.buffer =
+              fx_buffers[selectReverb.value] || fx_buffers.hall;
+            fx_reverbWet.gain.setTargetAtTime(
+              0.5,
+              fx_audioCtx.currentTime,
+              0.01,
+            );
+            fx_reverbDry.gain.setTargetAtTime(
+              0.8,
+              fx_audioCtx.currentTime,
+              0.01,
+            );
+          }
+        }
+
+        // Auto-pan
+        fx_lfoPanGain.gain.setTargetAtTime(
+          isAutoPan ? 1 : 0,
+          fx_audioCtx.currentTime,
+          0.01,
+        );
+        setFxBtnActive(btnAutoPan, isAutoPan);
+
+        // 3D width
+        fx_widthDryGain.gain.setTargetAtTime(
+          is3D ? 0 : 1,
+          fx_audioCtx.currentTime,
+          0.01,
+        );
+        fx_widthWetGain.gain.setTargetAtTime(
+          is3D ? 1 : 0,
+          fx_audioCtx.currentTime,
+          0.01,
+        );
+        setFxBtnActive(btn3D, is3D);
+
+        // 8D rotation (the rotate() rAF loop keeps running independently of song changes,
+        // this just makes sure the button + panner center state stays in sync)
+        setFxBtnActive(btn8D, is8D);
+        if (!is8D) {
+          fx_panner8D.positionX.setTargetAtTime(
+            0,
+            fx_audioCtx.currentTime,
+            0.01,
+          );
+          fx_panner8D.positionZ.setTargetAtTime(
+            0,
+            fx_audioCtx.currentTime,
+            0.01,
+          );
+        }
+      }
+
+      song.addEventListener("loadedmetadata", reapplyFxState);
+
+      function playSpecificSong(index) {
+        if (currentPlaylistData.length === 0) return;
+        currentSongIndex = index;
+        let songObj = currentPlaylistData[currentSongIndex];
+
+        song.src = songObj.src;
+        song
+          .play()
+          .then(() => {
+            playing = true;
+            if (play1) play1.innerHTML = "⏸️";
+            if (play2) play2.innerHTML = "⏸️";
+          })
+          .catch((err) =>
+            console.log("Playback interaction error blocked:", err),
+          );
+
+        let nameBox = document.getElementById("name_box");
+        let nameBox2 = document.getElementById("name_box2");
+        if (nameBox) nameBox.innerHTML = `<i>${songObj.name}</i>`;
+        if (nameBox2) nameBox2.innerHTML = `<i>${songObj.name}</i>`;
+
+        if (song_container) {
+          let allSongCards = song_container.querySelectorAll(".song-card");
+          allSongCards.forEach((c, i) => {
+            if (i === currentSongIndex) {
+              c.style.border = "2px solid #00ffff";
+              c.style.background = "linear-gradient(purple, blue)";
+            } else {
+              c.style.border = "2px solid #fff";
+              c.style.background =
+                "linear-gradient(rgb(34, 255, 34), rgb(103, 103, 103))";
+            }
+          });
+        }
+
+        let albumImg = document.querySelector(".song-album img");
+        let metadataBox = document.querySelector(".metadata-ct");
+
+        if (albumImg) albumImg.src = "t.jpg";
+        if (metadataBox) metadataBox.innerHTML = "<i>Scanning file...</i>";
+
+        if (songObj.fileObj) {
+          if (window.jsmediatags) {
+            window.jsmediatags.read(songObj.fileObj, {
+              onSuccess: function (tag) {
+                let tags = tag.tags;
+                let artist = tags.artist || "Unknown Artist";
+                let title = tags.title || songObj.name;
+                let album = tags.album || "Unknown Album";
+
+                if (metadataBox) {
+                  metadataBox.innerHTML = `
+                                <div style="margin-bottom: 5px; font-size: 0.95rem;"><b>Title:</b> <i>${title}</i></div>
+                                <div style="margin-bottom: 5px; font-size: 0.95rem;"><b>Artist:</b> <i>${artist}</i></div>
+                                <div style="margin-bottom: 5px; font-size: 0.95rem;"><b>Album:</b> <i>${album}</i></div>
+                            `;
+                }
+
+                let image = tags.picture;
+                if (image && albumImg) {
+                  let base64String = "";
+                  for (let i = 0; i < image.data.length; i++) {
+                    base64String += String.fromCharCode(image.data[i]);
+                  }
+                  let base64 =
+                    "data:" +
+                    image.format +
+                    ";base64," +
+                    window.btoa(base64String);
+                  albumImg.src = base64;
+                }
+              },
+              onError: function (error) {
+                if (metadataBox) {
+                  metadataBox.innerHTML = `
+                                <div style="margin-bottom: 5px; color: #ff9999;"><b>Result:</b> <i>No metadata found.</i></div>
+                                <div style="margin-bottom: 5px;"><b>File:</b> <i>${songObj.name}</i></div>
+                            `;
+                }
+              },
+            });
+          } else {
+            if (metadataBox) {
+              metadataBox.innerHTML = `<div style="color: #ff9999;"><b>Error:</b> <i>Tag reader failed to load.</i></div>`;
+            }
+          }
+        } else {
+          if (metadataBox) {
+            metadataBox.innerHTML = `
+                    <div style="margin-bottom: 5px;"><b>Title:</b> <i>${songObj.name}</i></div>
+                    <div style="margin-bottom: 5px; color: #aaa;"><b>Note:</b> <i>Upload local files to see metadata.</i></div>
+                `;
+          }
+        }
+      }
+
+      // =========================================================================
+      // DYNAMIC ACTIONS COMPLETE SYSTEM FOR INCOMPLETE AND INACTIVE SECTIONS
+      // =========================================================================
+
+      // 1. ACCOUNT OVERVIEW PANEL INTERACTION SYSTEM (ALIVE IMPLEMENTATION)
+      let editAccountBtn = document.getElementById("acc-action-edit");
+      let settingsAccountBtn = document.getElementById("acc-action-settings");
+      let contactAccountBtn = document.getElementById("acc-action-contact");
+      let feedbackAccountBtn = document.getElementById("acc-action-feedback");
+      let displayUsernameText = document.getElementById(
+        "display-profile-username",
+      );
+
+      if (editAccountBtn) {
+        editAccountBtn.addEventListener("click", () => {
+          let newName = prompt(
+            "Enter your new user account alias profile name:",
+            displayUsernameText ? displayUsernameText.innerText : "",
+          );
+          if (newName && newName.trim() !== "") {
+            if (displayUsernameText)
+              displayUsernameText.innerText = newName.trim();
+            alert_fn("Username updated locally!");
+          }
+        });
+      }
+
+      if (settingsAccountBtn) {
+        settingsAccountBtn.addEventListener("click", () => {
+          alert_fn("System configurations dashboard is fully operational!");
+        });
+      }
+
+      if (contactAccountBtn) {
+        contactAccountBtn.addEventListener("click", () => {
+          alert_fn("Developer support directory: devilgamer852212@gmail.com");
+        });
+      }
+
+      if (feedbackAccountBtn && about_btn) {
+        feedbackAccountBtn.addEventListener("click", () => {
+          // Programmatic switch layer simulation call
+          about_btn.click();
+        });
+      }
+
+      // 2. STABLE ASYNC FEEDBACK MODULE FORWARDING ENGINE (ALIVE IMPLEMENTATION)
+      let feedbackForm = document.getElementById("feedback-form");
+      if (feedbackForm) {
+        feedbackForm.addEventListener("submit", function (event) {
+          event.preventDefault(); // Intercept default page reloads
+
+          let senderBtn = document.getElementById("feedback-send");
+          if (senderBtn) {
+            senderBtn.innerText = "SENDING...";
+            senderBtn.disabled = true;
+          }
+
+          // Gather form values
+          let name = document.getElementById("sender-name").value;
+          let email = document.getElementById("sender-gmail").value;
+          let message = document.getElementById("sender-message").value;
+
+          // Asynchronously dispatch payload data via clean secure web service layer to destination inbox address
+          fetch("https://formsubmit.co/ajax/devilgamer852212@gmail.com", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              Name: name,
+              Email: email,
+              Message: message,
+              _subject: "New Audio Lab App User Feedback Form Submission!",
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert_fn("Feedback successfully sent to email!");
+              feedbackForm.reset();
+            })
+            .catch((error) => {
+              console.error("Transmission breakdown occurred:", error);
+              alert_fn("Error forwarding context metrics. Try again.");
+            })
+            .finally(() => {
+              if (senderBtn) {
+                senderBtn.innerText = "SEND";
+                senderBtn.disabled = false;
+              }
+            });
+        });
+      }
+
+      // =========================================================================
+      // RESPONSIVE MOBILE NAVIGATION: SIDEBAR DRAWER + BOTTOM NAV (ADDED)
+      // =========================================================================
+      (function () {
+        let leftSide = document.querySelector(".left-side");
+        let overlay = document.getElementById("sidebar-overlay");
+        let menuToggle = document.getElementById("menu-toggle");
+        let mobileNavBtns = document.querySelectorAll(".mobile-nav-btn");
+
+        function openSidebar() {
+          if (!leftSide || !overlay) return;
+          leftSide.classList.add("sidebar-open");
+          overlay.classList.add("show");
+        }
+
+        function closeSidebar() {
+          if (!leftSide || !overlay) return;
+          leftSide.classList.remove("sidebar-open");
+          overlay.classList.remove("show");
+        }
+
+        if (menuToggle) {
+          menuToggle.addEventListener("click", () => {
+            if (leftSide.classList.contains("sidebar-open")) {
+              closeSidebar();
+            } else {
+              openSidebar();
+            }
+          });
+        }
+
+        if (overlay) {
+          overlay.addEventListener("click", closeSidebar);
+        }
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeSidebar();
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 860) closeSidebar();
+        });
+
+        // Selecting a song from the library drawer auto-closes it on mobile
+        if (leftSide) {
+          leftSide.addEventListener("click", (e) => {
+            if (e.target.closest(".song-card") && window.innerWidth <= 860) {
+              closeSidebar();
+            }
+          });
+        }
+
+        // Bottom mobile nav proxies clicks to the existing desktop nav buttons
+        mobileNavBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            let targetId = btn.getAttribute("data-target");
+            let targetBtn = document.getElementById(targetId);
+            if (targetBtn) targetBtn.click();
+            mobileNavBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            closeSidebar();
+          });
+        });
+
+        if (mobileNavBtns.length) mobileNavBtns[0].classList.add("active");
+      })();
+
+      // Core dynamic lifecycle sequence initialization triggers
+      renderHomeCards();
+      renderAdminEditList();
+      renderAdminUploadList();
+
+      // =========================================================================
+      // PWA: SERVICE WORKER REGISTRATION (enables install + offline support)
+      // =========================================================================
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("sw.js")
+            .then((reg) =>
+              console.log("Audio Lab service worker registered:", reg.scope),
+            )
+            .catch((err) =>
+              console.warn(
+                "Audio Lab service worker registration failed:",
+                err,
+              ),
+            );
+        });
+      }
+    </script>
+  </body>
+</html>
